@@ -47,9 +47,6 @@ if ($id > 0) {
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
                     <li class="nav-item active"><a class="nav-link" href="voitures.php">Voitures</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php#about">À propos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php#contact">Contact</a></li>
                     <?php if ($userController->estConnecte()): ?>
                         <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>

@@ -386,8 +386,6 @@ if ($id > 0) {
             <a href="index.php" class="logo">AutoTech</a>
             <ul class="nav-links">
                 <li><a href="index.php">Accueil</a></li>
-                <li><a href="about.html">À propos</a></li>
-                <li><a href="services.html">Services</a></li>
                 <li><a href="car.php">Voitures</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>

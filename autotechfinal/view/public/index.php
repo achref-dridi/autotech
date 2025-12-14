@@ -43,9 +43,6 @@ $vehiculesVedette = array_slice($vehicules, 0, 8);
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a class="nav-link" href="index.php">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="voitures.php">Voitures</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">À propos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <?php if ($userController->estConnecte()): ?>
                         <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
