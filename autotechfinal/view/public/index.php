@@ -426,7 +426,6 @@ $vehiculesVedette = array_slice($vehicules, 0, 8);
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="index.php"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a>
@@ -450,9 +449,7 @@ $vehiculesVedette = array_slice($vehicules, 0, 8);
             </div>
         </div>
     </nav>
-    <!-- END nav -->
 
-    <!-- Hero Section -->
     <div class="hero-wrap" style="background-image: url('../../images/bg_1.jpg');">
         <div class="overlay"></div>
         <div class="container">
@@ -467,7 +464,6 @@ $vehiculesVedette = array_slice($vehicules, 0, 8);
         </div>
     </div>
 
-    <!-- Featured Vehicles -->
     <section class="ftco-section ftco-no-pt bg-light">
         <div class="container">
             <div class="row justify-content-center">
@@ -521,7 +517,6 @@ $vehiculesVedette = array_slice($vehicules, 0, 8);
         </div>
     </section>
 
-    <!-- About Section -->
     <section class="ftco-section ftco-about" id="about">
         <div class="container">
             <div class="row no-gutters">
@@ -545,7 +540,6 @@ Grâce à une interface moderne et des fonctionnalités intelligentes, nous rend
         </div>
     </section>
 
-    <!-- Services Section -->
     <section class="ftco-section" id="services">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -595,7 +589,6 @@ Grâce à une interface moderne et des fonctionnalités intelligentes, nous rend
         </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section class="ftco-section testimony-section bg-light">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -661,7 +654,6 @@ Grâce à une interface moderne et des fonctionnalités intelligentes, nous rend
         </div>
     </section>
 
-    <!-- Stats Section -->
     <section class="ftco-counter ftco-section img" id="section-counter">
         <div class="container">
             <div class="row">
@@ -701,7 +693,6 @@ Grâce à une interface moderne et des fonctionnalités intelligentes, nous rend
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="ftco-footer ftco-section" id="contact">
         <div class="container">
             <div class="row mb-5">

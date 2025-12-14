@@ -84,26 +84,29 @@
 				}
 			}
 		});
-		$('.carousel-testimony').owlCarousel({
-			center: true,
-			loop: false,
-			items:1,
-			margin: 30,
-			stagePadding: 0,
-			nav: false,
-			navText: ['<span class="ion-ios-arrow-back">', '<span class="ion-ios-arrow-forward">'],
-			responsive:{
-				0:{
-					items: 1
-				},
-				600:{
-					items: 2
-				},
-				1000:{
-					items: 3
-				}
-			}
-		});
+$('.carousel-testimony').owlCarousel({
+    center: false,        
+    loop: true,             
+    margin: 30,
+    autoplay: true,
+    autoplayTimeout: 5000,
+    smartSpeed: 800,
+    nav: false,
+    dots: true,
+
+    responsive:{
+        0:{
+            items: 1
+        },
+        600:{
+            items: 2
+        },
+        1000:{
+            items: 3
+        }
+    }
+});
+
 
 	};
 	carousel();
