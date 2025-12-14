@@ -65,7 +65,7 @@
 	var carousel = function() {
 		$('.carousel-car').owlCarousel({
 			center: true,
-			loop: true,
+			loop: false,
 			autoplay: true,
 			items:1,
 			margin: 30,
@@ -86,7 +86,7 @@
 		});
 		$('.carousel-testimony').owlCarousel({
 			center: true,
-			loop: true,
+			loop: false,
 			items:1,
 			margin: 30,
 			stagePadding: 0,
