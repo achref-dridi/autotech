@@ -40,18 +40,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - AutoTech</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            background: #1a1a1a;
         }
         .signup-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url('../../images/bg_3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
             padding: 40px 20px;
+        }
+        .signup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
         }
         .signup-card {
             background: white;
@@ -60,10 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             max-width: 500px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
         }
         .signup-header {
             text-align: center;
             margin-bottom: 30px;
+        }
+        .signup-header img {
+            width: 120px;
+            margin-bottom: 20px;
         }
         .signup-header h2 {
             color: #333;
@@ -125,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="signup-container">
         <div class="signup-card">
             <div class="signup-header">
-                <h2>🚗 AutoTech</h2>
+                <img src="../../images/off_logo.png" alt="AutoTech Logo">
                 <p>Créez votre compte</p>
             </div>
 
@@ -179,7 +200,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/bootstrap.min.js"></script>
     <script src="../../assets/js/validation.js"></script>
 </body>
 </html>

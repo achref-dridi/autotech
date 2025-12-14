@@ -38,186 +38,148 @@ if (isset($_GET['success'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Véhicules - AutoTech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f8f9fa;
-        }
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .navbar-brand {
-            font-weight: 800;
-            color: #667eea !important;
-        }
-        .page-header {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        .vehicle-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
-        }
-        .vehicle-card:hover {
-            transform: translateY(-5px);
-        }
-        .vehicle-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .vehicle-body {
-            padding: 20px;
-        }
-        .vehicle-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-        }
-        .vehicle-specs {
-            display: flex;
-            gap: 15px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        .spec-badge {
-            background: #f0f0f0;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            color: #555;
-        }
-        .btn-add {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            font-weight: 600;
-            border-radius: 10px;
-        }
-        .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-            color: white;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .empty-state-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/animate.css">
+    <link rel="stylesheet" href="../../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../../assets/css/icomoon.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
-<body>
+<body data-theme="dark">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-            <a class="navbar-brand" href="../public/index.php">🚗 AutoTech</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand" href="../public/index.php"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
                     <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
                     <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <?php if ($message): ?>
-            <div class="alert alert-success alert-dismissible fade show mt-4">
-                <?= htmlspecialchars($message) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php endif; ?>
-
-        <div class="page-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="mb-2">Mes Véhicules</h1>
-                    <p class="text-muted mb-0">Gérez vos véhicules disponibles à la location</p>
+    <!-- Hero Section -->
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="../public/index.php">Accueil <i class="ion-ios-arrow-forward"></i></a></span> <span>Mes Véhicules <i class="ion-ios-arrow-forward"></i></span></p>
+                    <h1 class="mb-3 bread">Gérez vos véhicules</h1>
                 </div>
-                <a href="ajouter-vehicule.php" class="btn btn-add">
-                    + Ajouter un véhicule
-                </a>
             </div>
         </div>
+    </section>
 
-        <?php if (empty($mesVehicules)): ?>
-            <div class="empty-state">
-                <div class="empty-state-icon">🚗</div>
-                <h2>Aucun véhicule</h2>
-                <p class="text-muted">Vous n'avez pas encore ajouté de véhicule.</p>
-                <a href="ajouter-vehicule.php" class="btn btn-add mt-3">Ajouter mon premier véhicule</a>
+    <!-- Main Content -->
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <?php if ($message): ?>
+                <div class="alert alert-success alert-dismissible fade show">
+                    <?= htmlspecialchars($message) ?>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            <?php endif; ?>
+
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2>Mes Véhicules</h2>
+                            <p class="text-muted">Gérez vos véhicules disponibles à la location</p>
+                        </div>
+                        <a href="ajouter-vehicule.php" class="btn btn-primary">
+                            <span class="icon-plus"></span> Ajouter un véhicule
+                        </a>
+                    </div>
+                </div>
             </div>
-        <?php else: ?>
-            <div class="row g-4 mb-5">
-                <?php foreach ($mesVehicules as $v): ?>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="vehicle-card">
-                            <img src="<?= 
-                                !empty($v['image_principale']) 
-                                    ? '../../uploads/' . htmlspecialchars($v['image_principale']) 
-                                    : '../../assets/images/car-1.jpg' 
-                            ?>" alt="<?= htmlspecialchars($v['marque'] . ' ' . $v['modele']) ?>" class="vehicle-image">
-                            
-                            <div class="vehicle-body">
-                                <h5 class="vehicle-title">
-                                    <?= htmlspecialchars($v['marque'] . ' ' . $v['modele']) ?>
-                                </h5>
-                                
-                                <div class="vehicle-specs">
-                                    <span class="spec-badge">📅 <?= htmlspecialchars($v['annee']) ?></span>
-                                    <span class="spec-badge">⛽ <?= htmlspecialchars($v['carburant']) ?></span>
-                                    <span class="spec-badge">🛣️ <?= number_format($v['kilometrage']) ?> km</span>
-                                </div>
 
-                                <?php if (!empty($v['prix_journalier'])): ?>
-                                    <p class="fw-bold text-primary mb-3">
-                                        <?= number_format($v['prix_journalier'], 2) ?> DT / jour
+            <?php if (empty($mesVehicules)): ?>
+                <div class="row">
+                    <div class="col-md-12 text-center py-5">
+                        <div style="font-size: 64px; margin-bottom: 20px;">🚗</div>
+                        <h3>Aucun véhicule</h3>
+                        <p class="text-muted">Vous n'avez pas encore ajouté de véhicule.</p>
+                        <a href="ajouter-vehicule.php" class="btn btn-primary mt-3">Ajouter mon premier véhicule</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="row">
+                    <?php foreach ($mesVehicules as $v): ?>
+                        <div class="col-md-4">
+                            <div class="car-wrap rounded ftco-animate">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('<?= 
+                                    !empty($v['image_principale']) 
+                                        ? '../../uploads/' . htmlspecialchars($v['image_principale']) 
+                                        : '../../images/car-1.jpg' 
+                                ?>');"></div>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="../public/voiture-details.php?id=<?= $v['id_vehicule'] ?>"><?= htmlspecialchars($v['marque'] . ' ' . $v['modele']) ?></a></h2>
+                                    <div class="d-flex mb-3">
+                                        <span class="cat"><?= htmlspecialchars($v['annee']) ?></span>
+                                        <p class="price ml-auto"><?= !empty($v['prix_journalier']) ? number_format($v['prix_journalier'], 2) . ' DT' : 'Prix sur demande' ?> <span>/jour</span></p>
+                                    </div>
+                                    <p class="d-flex mb-0 d-block">
+                                        <a href="../public/voiture-details.php?id=<?= $v['id_vehicule'] ?>" class="btn btn-secondary py-2 mr-1" style="width: 32%;">Voir</a>
+                                        <a href="modifier-vehicule.php?id=<?= $v['id_vehicule'] ?>" class="btn btn-primary py-2 mr-1" style="width: 32%;">Modifier</a>
+                                        <a href="mes-vehicules.php?supprimer=<?= $v['id_vehicule'] ?>" 
+                                           class="btn btn-danger py-2" style="width: 32%;"
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce véhicule?')">Supprimer</a>
                                     </p>
-                                <?php endif; ?>
-
-                                <div class="d-flex gap-2">
-                                    <a href="../public/voiture-details.php?id=<?= $v['id_vehicule'] ?>" 
-                                       class="btn btn-sm btn-outline-primary flex-fill">
-                                        Voir
-                                    </a>
-                                    <a href="modifier-vehicule.php?id=<?= $v['id_vehicule'] ?>" 
-                                       class="btn btn-sm btn-warning flex-fill">
-                                        Modifier
-                                    </a>
-                                    <a href="mes-vehicules.php?supprimer=<?= $v['id_vehicule'] ?>" 
-                                       class="btn btn-sm btn-danger flex-fill"
-                                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce véhicule?')">
-                                        Supprimer
-                                    </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Footer -->
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2"><a href="#" class="logo"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a></h2>
+                        <p>Autotech est conçu pour centraliser et simplifier l'expérience automobile dans un environnement digital de pointe.</p>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Vous avez des Questions?</h2>
+                        <div class="block-23 mb-3">
+                            <ul>
+                                <li><span class="icon icon-map-marker"></span><span class="text">Esprit, Ariana sogra, Ariana, Tunisie</span></li>
+                                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+216 33 856 909</span></a></li>
+                                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">AutoTech@gmail.tn</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés | AutoTech</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="../../assets/js/popper.min.js"></script>
+    <script src="../../assets/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/jquery.stellar.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
 </body>
 </html>

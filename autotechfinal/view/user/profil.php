@@ -62,86 +62,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil - AutoTech</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f8f9fa;
-        }
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .navbar-brand {
-            font-weight: 800;
-            color: #667eea !important;
-        }
-        .profile-container {
-            max-width: 900px;
-            margin: 40px auto;
-        }
-        .profile-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-        }
-        .profile-header {
-            text-align: center;
-            padding: 30px 0;
-            border-bottom: 2px solid #f0f0f0;
-            margin-bottom: 30px;
-        }
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 48px;
-            font-weight: 700;
-            margin: 0 auto 15px;
-        }
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #1a1a1a;
-        }
-        .form-label {
-            font-weight: 600;
-            color: #555;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            padding: 12px 30px;
-            font-weight: 600;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/animate.css">
+    <link rel="stylesheet" href="../../assets/css/flaticon.css">
+    <link rel="stylesheet" href="../../assets/css/icomoon.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
-<body>
+<body data-theme="dark">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-            <a class="navbar-brand" href="../public/index.php">🚗 AutoTech</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand" href="../public/index.php"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="profil.php">Mon Profil</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="profil.php">Mon Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
                     <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                 </ul>
@@ -149,103 +90,165 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         </div>
     </nav>
 
-    <div class="profile-container">
-        <?php if ($message): ?>
-            <div class="alert alert-<?= $messageType ?> alert-dismissible fade show">
-                <?= htmlspecialchars($message) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <!-- Hero Section -->
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('../../images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="../public/index.php">Accueil <i class="ion-ios-arrow-forward"></i></a></span> <span>Mon Profil <i class="ion-ios-arrow-forward"></i></span></p>
+                    <h1 class="mb-3 bread">Gérez votre profil</h1>
+                </div>
             </div>
-        <?php endif; ?>
+        </div>
+    </section>
 
-        <!-- Profile Header -->
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="profile-avatar">
-                    <?= strtoupper(substr($utilisateur['prenom'], 0, 1) . substr($utilisateur['nom'], 0, 1)) ?>
+    <!-- Profile Content -->
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <?php if ($message): ?>
+                <div class="alert alert-<?= $messageType ?> alert-dismissible fade show">
+                    <?= htmlspecialchars($message) ?>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
                 </div>
-                <h2><?= htmlspecialchars($utilisateur['prenom'] . ' ' . $utilisateur['nom']) ?></h2>
-                <p class="text-muted"><?= htmlspecialchars($utilisateur['email']) ?></p>
+            <?php endif; ?>
+
+            <!-- Profile Header -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="bg-white rounded p-4 text-center">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 36px; font-weight: 700; margin: 0 auto 15px;">
+                            <?= strtoupper(substr($utilisateur['prenom'], 0, 1) . substr($utilisateur['nom'], 0, 1)) ?>
+                        </div>
+                        <h2><?= htmlspecialchars($utilisateur['prenom'] . ' ' . $utilisateur['nom']) ?></h2>
+                        <p class="text-muted"><?= htmlspecialchars($utilisateur['email']) ?></p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Update Profile Form -->
-            <h3 class="section-title">📝 Informations personnelles</h3>
-            <form method="POST" enctype="multipart/form-data" onsubmit="return validerProfil()">
-                <input type="hidden" name="action" value="update_profil">
-                
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="nom" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="nom" name="nom" 
-                               value="<?= htmlspecialchars($utilisateur['nom']) ?>">
+            <div class="row">
+                <!-- Update Profile Form -->
+                <div class="col-md-6 mb-4">
+                    <div class="bg-white rounded p-4">
+                        <h3 class="mb-4">📝 Informations personnelles</h3>
+                        <form method="POST" enctype="multipart/form-data" onsubmit="return validerProfil()">
+                            <input type="hidden" name="action" value="update_profil">
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nom</label>
+                                    <input type="text" class="form-control" name="nom" 
+                                           value="<?= htmlspecialchars($utilisateur['nom']) ?>">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Prénom</label>
+                                    <input type="text" class="form-control" name="prenom" 
+                                           value="<?= htmlspecialchars($utilisateur['prenom']) ?>">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Téléphone</label>
+                                <input type="text" class="form-control" name="telephone" 
+                                       value="<?= htmlspecialchars($utilisateur['telephone'] ?? '') ?>" 
+                                       placeholder="+216 XX XXX XXX">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Adresse</label>
+                                <textarea class="form-control" name="adresse" rows="2"><?= htmlspecialchars($utilisateur['adresse'] ?? '') ?></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    <label class="form-label">Ville</label>
+                                    <input type="text" class="form-control" name="ville" 
+                                           value="<?= htmlspecialchars($utilisateur['ville'] ?? '') ?>">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Code Postal</label>
+                                    <input type="text" class="form-control" name="code_postal" 
+                                           value="<?= htmlspecialchars($utilisateur['code_postal'] ?? '') ?>">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Photo de profil</label>
+                                <input type="file" class="form-control" name="photo_profil" accept="image/*">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Mettre à jour le profil</button>
+                        </form>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="prenom" name="prenom" 
-                               value="<?= htmlspecialchars($utilisateur['prenom']) ?>">
+                </div>
+
+                <!-- Change Password -->
+                <div class="col-md-6 mb-4">
+                    <div class="bg-white rounded p-4">
+                        <h3 class="mb-4">🔒 Changer le mot de passe</h3>
+                        <form method="POST">
+                            <input type="hidden" name="action" value="change_password">
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Ancien mot de passe</label>
+                                <input type="password" class="form-control" name="ancien_mot_de_passe">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Nouveau mot de passe</label>
+                                <input type="password" class="form-control" name="nouveau_mot_de_passe">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Confirmer le nouveau mot de passe</label>
+                                <input type="password" class="form-control" name="confirmer_nouveau_mot_de_passe">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Changer le mot de passe</button>
+                        </form>
                     </div>
                 </div>
-
-                <div class="mb-3">
-                    <label for="telephone" class="form-label">Téléphone</label>
-                    <input type="text" class="form-control" id="telephone" name="telephone" 
-                           value="<?= htmlspecialchars($utilisateur['telephone'] ?? '') ?>" 
-                           placeholder="+216 XX XXX XXX">
-                </div>
-
-                <div class="mb-3">
-                    <label for="adresse" class="form-label">Adresse</label>
-                    <textarea class="form-control" id="adresse" name="adresse" rows="2"><?= htmlspecialchars($utilisateur['adresse'] ?? '') ?></textarea>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-8 mb-3">
-                        <label for="ville" class="form-label">Ville</label>
-                        <input type="text" class="form-control" id="ville" name="ville" 
-                               value="<?= htmlspecialchars($utilisateur['ville'] ?? '') ?>">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="code_postal" class="form-label">Code Postal</label>
-                        <input type="text" class="form-control" id="code_postal" name="code_postal" 
-                               value="<?= htmlspecialchars($utilisateur['code_postal'] ?? '') ?>">
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="photo_profil" class="form-label">Photo de profil</label>
-                    <input type="file" class="form-control" id="photo_profil" name="photo_profil" accept="image/*">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Mettre à jour le profil</button>
-            </form>
+            </div>
         </div>
+    </section>
 
-        <!-- Change Password -->
-        <div class="profile-card">
-            <h3 class="section-title">🔒 Changer le mot de passe</h3>
-            <form method="POST">
-                <input type="hidden" name="action" value="change_password">
-                
-                <div class="mb-3">
-                    <label class="form-label">Ancien mot de passe</label>
-                    <input type="password" class="form-control" name="ancien_mot_de_passe">
+    <!-- Footer -->
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2"><a href="#" class="logo"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a></h2>
+                        <p>Autotech est conçu pour centraliser et simplifier l'expérience automobile dans un environnement digital de pointe.</p>
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Nouveau mot de passe</label>
-                    <input type="password" class="form-control" name="nouveau_mot_de_passe">
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Vous avez des Questions?</h2>
+                        <div class="block-23 mb-3">
+                            <ul>
+                                <li><span class="icon icon-map-marker"></span><span class="text">Esprit, Ariana sogra, Ariana, Tunisie</span></li>
+                                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+216 33 856 909</span></a></li>
+                                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">AutoTech@gmail.tn</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Confirmer le nouveau mot de passe</label>
-                    <input type="password" class="form-control" name="confirmer_nouveau_mot_de_passe">
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés | AutoTech</p>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
-            </form>
+            </div>
         </div>
-    </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/jquery.min.js"></script>
+    <script src="../../assets/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="../../assets/js/popper.min.js"></script>
+    <script src="../../assets/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/jquery.stellar.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
     <script src="../../assets/js/validation.js"></script>
 </body>
 </html>
