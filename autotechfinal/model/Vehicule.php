@@ -16,7 +16,6 @@ class Vehicule {
     private $image_principale;
     private $statut_disponibilite;
     
-    // Constructeur
     public function __construct($id_utilisateur = null, $marque = '', $modele = '', $annee = null, 
                                $carburant = '', $kilometrage = 0) {
         $this->id_utilisateur = $id_utilisateur;
@@ -27,7 +26,6 @@ class Vehicule {
         $this->kilometrage = $kilometrage;
     }
     
-    // Getters
     public function getIdVehicule() { return $this->id_vehicule; }
     public function getIdUtilisateur() { return $this->id_utilisateur; }
     public function getMarque() { return $this->marque; }
@@ -42,7 +40,6 @@ class Vehicule {
     public function getImagePrincipale() { return $this->image_principale; }
     public function getStatutDisponibilite() { return $this->statut_disponibilite; }
     
-    // Setters
     public function setIdVehicule($id) { $this->id_vehicule = $id; }
     public function setIdUtilisateur($id) { $this->id_utilisateur = $id; }
     public function setMarque($marque) { $this->marque = $marque; }

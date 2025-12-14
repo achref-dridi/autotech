@@ -15,7 +15,6 @@ class Utilisateur {
     private $statut;
     private $role;
     
-    // Constructeur
     public function __construct($nom = '', $prenom = '', $email = '', $mot_de_passe = '') {
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -23,7 +22,6 @@ class Utilisateur {
         $this->mot_de_passe = $mot_de_passe;
     }
     
-    // Getters
     public function getIdUtilisateur() { return $this->id_utilisateur; }
     public function getNom() { return $this->nom; }
     public function getPrenom() { return $this->prenom; }
@@ -37,7 +35,6 @@ class Utilisateur {
     public function getStatut() { return $this->statut; }
     public function getRole() { return $this->role; }
     
-    // Setters
     public function setIdUtilisateur($id) { $this->id_utilisateur = $id; }
     public function setNom($nom) { $this->nom = $nom; }
     public function setPrenom($prenom) { $this->prenom = $prenom; }

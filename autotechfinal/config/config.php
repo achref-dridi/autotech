@@ -1,10 +1,8 @@
 <?php
-// Configuration de la base de données AutoTech
 
 class Config {
     private static $pdo = NULL;
     
-    // Paramètres de connexion
     private const DB_HOST = 'localhost';
     private const DB_NAME = 'autotech_db';
     private const DB_USER = 'root';
@@ -35,15 +33,12 @@ class Config {
     }
 }
 
-// Démarrer la session si elle n'est pas déjà démarrée
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Définir le fuseau horaire
 date_default_timezone_set('Africa/Tunis');
 
-// Constantes de l'application
 define('BASE_URL', '/AutoTech_Integrated/');
 define('UPLOAD_DIR', __DIR__ . '/../uploads/');
 define('UPLOAD_URL', BASE_URL . 'uploads/');

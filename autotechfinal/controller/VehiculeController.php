@@ -9,9 +9,7 @@ class VehiculeController {
         $this->pdo = Config::getConnexion();
     }
     
-    /**
-     * Créer un nouveau véhicule
-     */
+
     public function createVehicule($id_utilisateur, $marque, $modele, $annee, $carburant, $kilometrage, 
                                    $couleur, $transmission, $prix_journalier, $description, $image_principale) {
         try {
@@ -42,9 +40,7 @@ class VehiculeController {
         }
     }
     
-    /**
-     * Obtenir un véhicule par ID avec les informations du propriétaire
-     */
+
     public function getVehiculeById($id_vehicule) {
         $sql = "SELECT v.*, u.nom, u.prenom, u.email, u.telephone, u.ville
                 FROM vehicule v
@@ -55,10 +51,7 @@ class VehiculeController {
         $stmt->execute([':id' => $id_vehicule]);
         return $stmt->fetch();
     }
-    
-    /**
-     * Obtenir tous les véhicules disponibles avec informations propriétaire
-     */
+
     public function getAllVehicules() {
         $sql = "SELECT v.*, u.nom, u.prenom, u.email, u.telephone, u.ville
                 FROM vehicule v
@@ -68,10 +61,7 @@ class VehiculeController {
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
-    
-    /**
-     * Obtenir les véhicules d'un utilisateur spécifique
-     */
+
     public function getVehiculesByUtilisateur($id_utilisateur) {
         $sql = "SELECT v.*, u.nom, u.prenom
                 FROM vehicule v
@@ -84,9 +74,7 @@ class VehiculeController {
         return $stmt->fetchAll();
     }
     
-    /**
-     * Mettre à jour un véhicule
-     */
+
     public function updateVehicule($id_vehicule, $marque, $modele, $annee, $carburant, $kilometrage, 
                                    $couleur, $transmission, $prix_journalier, $description, $image_principale = null) {
         try {
@@ -128,18 +116,13 @@ class VehiculeController {
         }
     }
     
-    /**
-     * Supprimer un véhicule
-     */
+
     public function deleteVehicule($id_vehicule) {
         $sql = "DELETE FROM vehicule WHERE id_vehicule = :id";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([':id' => $id_vehicule]);
     }
-    
-    /**
-     * Vérifier si un utilisateur est propriétaire d'un véhicule
-     */
+
     public function estProprietaire($id_vehicule, $id_utilisateur) {
         $sql = "SELECT COUNT(*) FROM vehicule WHERE id_vehicule = :id_vehicule AND id_utilisateur = :id_utilisateur";
         $stmt = $this->pdo->prepare($sql);
@@ -150,9 +133,7 @@ class VehiculeController {
         return $stmt->fetchColumn() > 0;
     }
     
-    /**
-     * Rechercher des véhicules
-     */
+
     public function rechercherVehicules($marque = null, $prix_max = null, $carburant = null) {
         $sql = "SELECT v.*, u.nom, u.prenom, u.email, u.telephone, u.ville
                 FROM vehicule v

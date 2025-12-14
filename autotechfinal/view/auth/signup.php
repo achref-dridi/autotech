@@ -6,13 +6,11 @@ $userController = new UtilisateurController();
 $message = '';
 $messageType = '';
 
-// Si déjà connecté, rediriger
 if ($userController->estConnecte()) {
     header('Location: ../public/index.php');
     exit();
 }
 
-// Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'] ?? '';
     $prenom = $_POST['prenom'] ?? '';
@@ -23,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userController->inscrire($nom, $prenom, $email, $mot_de_passe, $telephone);
     
     if ($result['success']) {
-        // Auto-connexion après inscription
         $loginResult = $userController->connecter($email, $mot_de_passe);
         header('Location: ../public/index.php');
         exit();

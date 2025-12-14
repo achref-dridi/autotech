@@ -6,13 +6,11 @@ $userController = new UtilisateurController();
 $message = '';
 $messageType = '';
 
-// Si déjà connecté, rediriger
 if ($userController->estConnecte()) {
     header('Location: ../public/index.php');
     exit();
 }
 
-// Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $mot_de_passe = $_POST['mot_de_passe'] ?? '';
