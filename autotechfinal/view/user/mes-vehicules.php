@@ -44,6 +44,57 @@ if (isset($_GET['success'])) {
     <link rel="stylesheet" href="../../assets/css/flaticon.css">
     <link rel="stylesheet" href="../../assets/css/icomoon.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .vehicle-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            transition: transform 0.3s;
+        }
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+        }
+        .vehicle-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+        .vehicle-body {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .vehicle-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .vehicle-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .spec-badge {
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .d-flex.gap-2 a {
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .vehicle-image {
+                height: 150px;
+            }
+        }
+    </style>
 </head>
 <body data-theme="dark">
     <!-- Navigation -->
@@ -104,37 +155,55 @@ if (isset($_GET['success'])) {
             </div>
 
             <?php if (empty($mesVehicules)): ?>
-                <div class="row">
-                    <div class="col-md-12 text-center py-5">
-                        <div style="font-size: 64px; margin-bottom: 20px;">🚗</div>
-                        <h3>Aucun véhicule</h3>
-                        <p class="text-muted">Vous n'avez pas encore ajouté de véhicule.</p>
-                        <a href="ajouter-vehicule.php" class="btn btn-primary mt-3">Ajouter mon premier véhicule</a>
-                    </div>
+                <div class="empty-state text-center">
+                    <div class="empty-state-icon" style="font-size: 48px;">🚗</div>
+                    <h2>Aucun véhicule</h2>
+                    <p class="text-muted">Vous n'avez pas encore ajouté de véhicule.</p>
+                    <a href="ajouter-vehicule.php" class="btn btn-add mt-3">Ajouter mon premier véhicule</a>
                 </div>
             <?php else: ?>
-                <div class="row">
+                <div class="row g-4 mb-5">
                     <?php foreach ($mesVehicules as $v): ?>
-                        <div class="col-md-4">
-                            <div class="car-wrap rounded ftco-animate">
-                                <div class="img rounded d-flex align-items-end" style="background-image: url('<?= 
+                        <div class="col-md-6 col-lg-4">
+                            <div class="vehicle-card">
+                                <img src="<?= 
                                     !empty($v['image_principale']) 
                                         ? '../../uploads/' . htmlspecialchars($v['image_principale']) 
-                                        : '../../images/car-1.jpg' 
-                                ?>');"></div>
-                                <div class="text">
-                                    <h2 class="mb-0"><a href="../public/voiture-details.php?id=<?= $v['id_vehicule'] ?>"><?= htmlspecialchars($v['marque'] . ' ' . $v['modele']) ?></a></h2>
-                                    <div class="d-flex mb-3">
-                                        <span class="cat"><?= htmlspecialchars($v['annee']) ?></span>
-                                        <p class="price ml-auto"><?= !empty($v['prix_journalier']) ? number_format($v['prix_journalier'], 2) . ' DT' : 'Prix sur demande' ?> <span>/jour</span></p>
+                                        : '../../assets/images/car-1.jpg' 
+                                ?>" alt="<?= htmlspecialchars($v['marque'] . ' ' . $v['modele']) ?>" class="vehicle-image">
+                                
+                                <div class="vehicle-body">
+                                    <h5 class="vehicle-title">
+                                        <?= htmlspecialchars($v['marque'] . ' ' . $v['modele']) ?>
+                                    </h5>
+                                    
+                                    <div class="vehicle-specs">
+                                        <span class="spec-badge">📅 <?= htmlspecialchars($v['annee']) ?></span>
+                                        <span class="spec-badge">⛽ <?= htmlspecialchars($v['carburant']) ?></span>
+                                        <span class="spec-badge">🛣️ <?= number_format($v['kilometrage']) ?> km</span>
                                     </div>
-                                    <p class="d-flex mb-0 d-block">
-                                        <a href="../public/voiture-details.php?id=<?= $v['id_vehicule'] ?>" class="btn btn-secondary py-2 mr-1" style="width: 32%;">Voir</a>
-                                        <a href="modifier-vehicule.php?id=<?= $v['id_vehicule'] ?>" class="btn btn-primary py-2 mr-1" style="width: 32%;">Modifier</a>
+
+                                    <?php if (!empty($v['prix_journalier'])): ?>
+                                        <p class="fw-bold text-primary mb-3">
+                                            <?= number_format($v['prix_journalier'], 2) ?> DT / jour
+                                        </p>
+                                    <?php endif; ?>
+
+                                    <div class="d-flex gap-2">
+                                        <a href="../public/voiture-details.php?id=<?= $v['id_vehicule'] ?>" 
+                                           class="btn btn-sm btn-outline-primary flex-fill">
+                                            Voir
+                                        </a>
+                                        <a href="modifier-vehicule.php?id=<?= $v['id_vehicule'] ?>" 
+                                           class="btn btn-sm btn-warning flex-fill">
+                                            Modifier
+                                        </a>
                                         <a href="mes-vehicules.php?supprimer=<?= $v['id_vehicule'] ?>" 
-                                           class="btn btn-danger py-2" style="width: 32%;"
-                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce véhicule?')">Supprimer</a>
-                                    </p>
+                                           class="btn btn-sm btn-danger flex-fill"
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce véhicule?')">
+                                            Supprimer
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
