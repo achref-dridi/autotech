@@ -63,23 +63,55 @@ if (isset($_GET['success'])) {
         :root {
             --primary-color: #2563eb;
             --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
             --light-bg: #f8fafc;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            color: #334155;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
+            color: var(--text-primary);
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            filter: brightness(1.1);
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: var(--primary-light) !important;
+            background: rgba(37, 99, 235, 0.1);
         }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
 
         .header {
-            background: white;
+            background: var(--card-bg);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .header-content {
@@ -94,10 +126,13 @@ if (isset($_GET['success'])) {
             font-size: 28px;
             font-weight: 700;
             margin: 0 0 5px 0;
+            color: var(--text-primary);
         }
 
         .header-info p {
             margin: 0;
+            color: var(--text-secondary);
+        }
             color: #64748b;
             font-size: 14px;
         }
@@ -129,21 +164,26 @@ if (isset($_GET['success'])) {
         }
 
         .vehicule-card {
-            background: white;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .vehicule-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.3);
+            border-color: var(--primary-color);
         }
 
         .vehicule-image {
             width: 100%;
-            height: 200px;
+            height: 220px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
@@ -160,42 +200,46 @@ if (isset($_GET['success'])) {
         }
 
         .vehicule-content {
-            padding: 20px;
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .vehicule-title {
-            font-size: 16px;
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
         .vehicule-info {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 3px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
         }
 
         .vehicule-price {
-            font-size: 18px;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary-color);
-            margin: 10px 0;
+            color: var(--primary-light);
+            margin: 0.75rem 0;
         }
 
         .vehicule-actions {
             display: flex;
-            gap: 8px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e2e8f0;
+            gap: 0.5rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .btn-action {
             flex: 1;
-            padding: 8px;
+            padding: 0.5rem;
             border: none;
-            border-radius: 6px;
-            font-size: 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -205,44 +249,50 @@ if (isset($_GET['success'])) {
         }
 
         .btn-edit {
-            background: #f59e0b;
-            color: white;
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
         }
 
         .btn-edit:hover {
-            background: #d97706;
-            color: white;
+            background: rgba(251, 146, 60, 0.3);
+            color: #fb923c;
             text-decoration: none;
+            border-color: #fb923c;
         }
 
         .btn-delete {
-            background: #ef4444;
-            color: white;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         .btn-delete:hover {
-            background: #dc2626;
-            color: white;
+            background: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
             text-decoration: none;
+            border-color: #ef4444;
         }
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 12px;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .empty-state i {
-            font-size: 48px;
-            color: #cbd5e1;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
         }
 
         .empty-state p {
-            font-size: 16px;
-            color: #94a3b8;
-            margin-bottom: 20px;
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
         }
 
         .alert {
@@ -276,6 +326,27 @@ if (isset($_GET['success'])) {
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="../public/index.php"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <div class="breadcrumb">
             <a href="mes-boutiques.php"><i class="fas fa-store"></i> Mes Boutiques</a> /
@@ -315,7 +386,7 @@ if (isset($_GET['success'])) {
                     <div class="vehicule-card">
                         <div class="vehicule-image">
                             <?php if ($vehicule['image_principale']): ?>
-                                <img src="/autotechfinal/images/<?= htmlspecialchars($vehicule['image_principale']) ?>" alt="<?= htmlspecialchars($vehicule['marque']) ?>">
+                                <img src="../../uploads/<?= htmlspecialchars($vehicule['image_principale']) ?>" alt="<?= htmlspecialchars($vehicule['marque']) ?>">
                             <?php else: ?>
                                 <i class="fas fa-car"></i>
                             <?php endif; ?>
@@ -332,7 +403,7 @@ if (isset($_GET['success'])) {
                                 <i class="fas fa-tachometer-alt"></i> <?= number_format($vehicule['kilometrage'], 0, ',', ' ') ?> km
                             </div>
                             <?php if ($vehicule['prix_journalier']): ?>
-                                <div class="vehicule-price"><?= number_format($vehicule['prix_journalier'], 2, ',', ' ') ?> €/jour</div>
+                                <div class="vehicule-price"><?= number_format($vehicule['prix_journalier'], 2, ',', ' ') ?> DT/jour</div>
                             <?php endif; ?>
                             <div class="vehicule-actions">
                                 <a href="modifier-vehicule.php?id=<?= $vehicule['id_vehicule'] ?>" class="btn-action btn-edit">

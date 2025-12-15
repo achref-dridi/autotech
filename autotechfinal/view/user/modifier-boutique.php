@@ -76,23 +76,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            color: #334155;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
+            color: #f1f5f9;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            filter: brightness(1.1);
+        }
+
+        .nav-link {
+            color: #cbd5e1 !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: #3b82f6 !important;
+            background: rgba(37, 99, 235, 0.1);
         }
 
         .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
 
         .form-card {
-            background: white;
+            background: #1e293b;
             border-radius: 12px;
             padding: 40px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .form-title {
             font-size: 28px;
             font-weight: 700;
-            color: var(--dark-bg);
+            color: #f1f5f9;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -100,28 +126,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .form-subtitle {
-            color: #64748b;
+            color: #cbd5e1;
             margin-bottom: 30px;
             font-size: 14px;
         }
 
         .form-group label {
             font-weight: 600;
-            color: #334155;
+            color: #f1f5f9;
             margin-bottom: 8px;
         }
 
         .form-control {
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(37, 99, 235, 0.3);
             padding: 12px 15px;
             font-size: 14px;
+            background: #0f172a;
+            color: #f1f5f9;
             transition: all 0.2s;
         }
 
         .form-control:focus {
+            background: #1e293b;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            color: #f1f5f9;
+        }
+
+        .form-control::placeholder {
+            color: #64748b;
+        }
         }
 
         .logo-upload {
@@ -230,10 +265,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             .form-title {
                 font-size: 24px;
             }
-        }
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="../public/index.php"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         <div class="form-card">
             <h1 class="form-title">
@@ -252,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label class="form-label">Logo de la boutique</label>
                     <div class="logo-preview" id="logoPreview">
                         <?php if ($boutique['logo']): ?>
-                            <img src="/autotechfinal/uploads/logos/<?= htmlspecialchars($boutique['logo']) ?>" alt="logo">
+<img src="../../uploads/logos/<?= htmlspecialchars($boutique['logo']) ?>" alt="logo">
                         <?php else: ?>
                             <i class="fas fa-store"></i>
                         <?php endif; ?>

@@ -13,7 +13,6 @@ if (!$userController->estConnecte()) {
 $boutiqueController = new BoutiqueController();
 $mesBoutiques = $boutiqueController->getBoutiquesByUser($_SESSION['user_id']);
 
-// Gestion suppression
 if (isset($_GET['supprimer']) && is_numeric($_GET['supprimer'])) {
     $id = (int)$_GET['supprimer'];
     $boutique = $boutiqueController->getBoutiqueById($id);
@@ -52,86 +51,202 @@ if (isset($_GET['success'])) {
             --primary-light: #3b82f6;
             --secondary-color: #10b981;
             --dark-bg: #0f172a;
-            --light-bg: #f8fafc;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--light-bg);
-            color: #334155;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        /* Navigation */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
 
-        .page-header {
+        .navbar-brand img {
+            height: 45px;
+            filter: brightness(1.1);
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: var(--primary-light) !important;
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(30, 41, 59, 0.8)),
+                        url('../../images/bg_2.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 6rem 0 4rem;
+            position: relative;
+        }
+
+        .breadcrumbs {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumbs a {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--primary-color);
+        }
+
+        .breadcrumbs i {
+            font-size: 0.7rem;
+            margin: 0 0.5rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Alert Messages */
+        .alert-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+            color: #10b981;
+            border: none;
+            border-left: 4px solid #10b981;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section Header */
+        .section-header {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 1rem;
         }
 
-        .page-header h1 {
-            font-size: 32px;
+        .section-header h2 {
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--dark-bg);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
             margin: 0;
         }
 
-        .btn-ajouter {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             border: none;
             color: white;
-            padding: 12px 30px;
-            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
             font-weight: 600;
+            border-radius: 10px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .btn-ajouter:hover {
+        .btn-add:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
             color: white;
             text-decoration: none;
         }
 
-        .alert {
-            border-radius: 8px;
-            border: none;
-            margin-bottom: 30px;
+        /* Empty State */
+        .empty-state {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 5rem 2rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
         }
 
-        .boutique-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+        }
+
+        .empty-state h3 {
+            color: var(--text-primary);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
         }
 
         .boutique-card {
-            background: white;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
+            height: 100%;
+            margin-bottom: 2rem;
         }
 
         .boutique-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.3);
+            border-color: var(--primary-color);
         }
 
         .boutique-logo {
             width: 100%;
-            height: 180px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 4rem;
             color: white;
             overflow: hidden;
         }
@@ -143,230 +258,302 @@ if (isset($_GET['success'])) {
         }
 
         .boutique-content {
-            padding: 20px;
-            flex-grow: 1;
+            padding: 1.5rem;
+            flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .boutique-title {
-            font-size: 18px;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--dark-bg);
-            margin-bottom: 10px;
-            line-height: 1.4;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
         }
 
         .boutique-info {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
 
         .boutique-info i {
-            color: var(--primary-color);
-            width: 16px;
+            color: var(--primary-light);
+            width: 20px;
         }
 
         .boutique-actions {
             display: flex;
-            gap: 10px;
+            gap: 0.5rem;
             margin-top: auto;
-            padding-top: 15px;
-            border-top: 1px solid #e2e8f0;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
         }
 
         .btn-action {
             flex: 1;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
             text-decoration: none;
-            display: inline-block;
             text-align: center;
+            border: none;
+        }
+
+        .btn-voitures {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-light);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-voitures:hover {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
         }
 
         .btn-modifier {
-            background-color: #f59e0b;
-            color: white;
+            background: rgba(251, 146, 60, 0.1);
+            color: #fb923c;
+            border: 1px solid #fb923c;
         }
 
         .btn-modifier:hover {
-            background-color: #d97706;
+            background: #fb923c;
             color: white;
             text-decoration: none;
         }
 
         .btn-supprimer {
-            background-color: #ef4444;
-            color: white;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid #ef4444;
         }
 
         .btn-supprimer:hover {
-            background-color: #dc2626;
+            background: #ef4444;
             color: white;
             text-decoration: none;
         }
 
-        .btn-voitures {
-            background-color: var(--primary-color);
-            color: white;
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--text-secondary);
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
         }
 
-        .btn-voitures:hover {
-            background-color: var(--primary-dark);
-            color: white;
+        footer h2 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        footer img {
+            height: 40px;
+            filter: brightness(1.1);
+        }
+
+        footer p, footer li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        footer a {
+            color: var(--text-secondary);
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 12px;
+        footer a:hover {
+            color: var(--primary-light);
         }
 
-        .empty-state i {
-            font-size: 48px;
-            color: #cbd5e1;
-            margin-bottom: 20px;
+        footer ul {
+            list-style: none;
+            padding: 0;
         }
 
-        .empty-state p {
-            font-size: 16px;
-            color: #94a3b8;
-            margin-bottom: 20px;
+        footer .icon {
+            color: var(--primary-light);
+            margin-right: 0.5rem;
         }
 
-        .navbar-top {
-            background: white;
-            padding: 15px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #64748b;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-links a.active {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .page-header {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
 
-            .boutique-grid {
-                grid-template-columns: 1fr;
+            .boutique-logo {
+                height: 180px;
             }
 
-            .nav-links {
+            .boutique-actions {
                 flex-direction: column;
-                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="navbar-top">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <div class="nav-links">
-                <a href="mes-vehicules.php"><i class="fas fa-car"></i> Mes Véhicules</a>
-                <a href="mes-boutiques.php" class="active"><i class="fas fa-store"></i> Mes Boutiques</a>
-                <a href="profil.php"><i class="fas fa-user"></i> Profil</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="page-header">
-            <h1><i class="fas fa-store" style="margin-right: 10px;"></i>Mes Boutiques</h1>
-            <a href="ajouter-boutique.php" class="btn-ajouter">
-                <i class="fas fa-plus"></i> Ajouter une boutique
+            <a class="navbar-brand" href="../public/index.php">
+                <img src="../../images/off_logo.png" alt="logo.png" id="img_logo">
             </a>
-        </div>
-
-        <?php if ($message): ?>
-            <div class="alert alert-success" role="alert">
-                <i class="fas fa-check-circle"></i> <?= htmlspecialchars($message) ?>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
+                </ul>
             </div>
-        <?php endif; ?>
+        </div>
+    </nav>
 
-        <?php if (empty($mesBoutiques)): ?>
-            <div class="empty-state">
-                <i class="fas fa-store"></i>
-                <h3 style="color: #334155; margin: 15px 0;">Aucune boutique créée</h3>
-                <p>Créez votre première boutique pour commencer à ajouter des véhicules dans un espace dédié.</p>
-                <a href="ajouter-boutique.php" class="btn-ajouter">
-                    <i class="fas fa-plus"></i> Créer une boutique
+    <!-- HERO -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="breadcrumbs">
+                <a href="../public/index.php">Accueil</a> <i class="fas fa-chevron-right"></i>
+                <span>Mes Boutiques</span>
+            </div>
+            <h1 class="hero-title">Gérez vos boutiques</h1>
+        </div>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="py-5">
+        <div class="container">
+            <?php if ($message): ?>
+                <div class="alert alert-success alert-dismissible fade show">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <?= htmlspecialchars($message) ?>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            <?php endif; ?>
+
+            <div class="section-header">
+                <div>
+                    <h2><i class="fas fa-store mr-2"></i> Mes Boutiques</h2>
+                    <p>Gérez vos boutiques et leurs véhicules</p>
+                </div>
+                <a href="ajouter-boutique.php" class="btn-add">
+                    <i class="fas fa-plus-circle"></i> Ajouter une boutique
                 </a>
             </div>
-        <?php else: ?>
-            <div class="boutique-grid">
-                <?php foreach ($mesBoutiques as $boutique): ?>
-                    <div class="boutique-card">
-                        <div class="boutique-logo">
-                            <?php if ($boutique['logo']): ?>
-                                <img src="/autotechfinal/uploads/logos/<?= htmlspecialchars($boutique['logo']) ?>" alt="<?= htmlspecialchars($boutique['nom_boutique']) ?>">
-                            <?php else: ?>
-                                <i class="fas fa-store"></i>
-                            <?php endif; ?>
+
+            <?php if (empty($mesBoutiques)): ?>
+                <div class="empty-state">
+                    <div class="empty-state-icon">🏪</div>
+                    <h3>Aucune boutique créée</h3>
+                    <p>Créez votre première boutique pour commencer à ajouter des véhicules dans un espace dédié.</p>
+                    <a href="ajouter-boutique.php" class="btn-add">
+                        <i class="fas fa-plus-circle"></i> Créer une boutique
+                    </a>
+                </div>
+            <?php else: ?>
+                <div class="row">
+                    <?php foreach ($mesBoutiques as $boutique): ?>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="boutique-card">
+                                <div class="boutique-logo">
+                                    <?php if ($boutique['logo']): ?>
+<img src="../../uploads/logos/<?= htmlspecialchars($boutique['logo']) ?>" 
+     alt="<?= htmlspecialchars($boutique['nom_boutique']) ?>">
+
+                                    <?php else: ?>
+                                        <i class="fas fa-store"></i>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="boutique-content">
+                                    <div class="boutique-title">
+                                        <?= htmlspecialchars($boutique['nom_boutique']) ?>
+                                    </div>
+                                    <div class="boutique-info">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <?= htmlspecialchars($boutique['adresse']) ?>
+                                    </div>
+                                    <div class="boutique-info">
+                                        <i class="fas fa-phone"></i>
+                                        <?= htmlspecialchars($boutique['telephone']) ?>
+                                    </div>
+                                    <div class="boutique-actions">
+                                        <a href="voitures-boutique.php?id=<?= $boutique['id_boutique'] ?>" 
+                                           class="btn-action btn-voitures">
+                                            <i class="fas fa-car"></i> Voitures
+                                        </a>
+                                        <a href="modifier-boutique.php?id=<?= $boutique['id_boutique'] ?>" 
+                                           class="btn-action btn-modifier">
+                                            <i class="fas fa-edit"></i> Modifier
+                                        </a>
+                                        <a href="mes-boutiques.php?supprimer=<?= $boutique['id_boutique'] ?>" 
+                                           class="btn-action btn-supprimer" 
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette boutique ?');">
+                                            <i class="fas fa-trash"></i> Supprimer
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="boutique-content">
-                            <div class="boutique-title"><?= htmlspecialchars($boutique['nom_boutique']) ?></div>
-                            <div class="boutique-info">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <?= htmlspecialchars($boutique['adresse']) ?>
-                            </div>
-                            <div class="boutique-info">
-                                <i class="fas fa-phone"></i>
-                                <?= htmlspecialchars($boutique['telephone']) ?>
-                            </div>
-                            <div class="boutique-actions">
-                                <a href="voitures-boutique.php?id=<?= $boutique['id_boutique'] ?>" class="btn-action btn-voitures">
-                                    <i class="fas fa-car"></i> Voitures
-                                </a>
-                                <a href="modifier-boutique.php?id=<?= $boutique['id_boutique'] ?>" class="btn-action btn-modifier">
-                                    <i class="fas fa-edit"></i> Modifier
-                                </a>
-                                <a href="mes-boutiques.php?supprimer=<?= $boutique['id_boutique'] ?>" class="btn-action btn-supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette boutique ?');">
-                                    <i class="fas fa-trash"></i> Supprimer
-                                </a>
-                            </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="mb-4">
+                        <h2><a href="#"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a></h2>
+                        <p>Autotech est conçu pour centraliser et simplifier l'expérience automobile dans un environnement digital de pointe.</p>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="mb-4">
+                        <h2>Vous avez des Questions?</h2>
+                        <div class="mb-3">
+                            <ul>
+                                <li><span class="icon"><i class="fas fa-map-marker-alt"></i></span><span>Esprit, Ariana sogra, Ariana, Tunisie</span></li>
+                                <li><a href="#"><span class="icon"><i class="fas fa-phone"></i></span><span>+216 33 856 909</span></a></li>
+                                <li><a href="#"><span class="icon"><i class="fas fa-envelope"></i></span><span>AutoTech@gmail.tn</span></a></li>
+                            </ul>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                </div>
             </div>
-        <?php endif; ?>
-    </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés | AutoTech</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>

@@ -343,9 +343,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
-                    <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
                     <li class="nav-item"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                 </ul>
             </div>
@@ -435,7 +436,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                    placeholder="Ex: 50000" min="0" required>
                         </div>
                         <div class="form-group">
-                            <label for="prix_journalier">Prix journalier (€)</label>
+                            <label for="prix_journalier">Prix journalier (DT)</label>
                             <input type="number" class="form-control" id="prix_journalier" name="prix_journalier" 
                                    placeholder="Ex: 45.99" step="0.01" min="0">
                         </div>

@@ -13,7 +13,7 @@ class BoutiqueController {
         try {
             $logo = "";
             if ($logoFile && $logoFile['error'] == 0) {
-                $targetDir = __DIR__ . '/../../uploads/logos/';
+                $targetDir = __DIR__ . '/../uploads/logos/';
                 if (!file_exists($targetDir)) mkdir($targetDir, 0777, true);
 
                 $logo = time() . '_' . basename($logoFile["name"]);
@@ -44,7 +44,7 @@ class BoutiqueController {
         try {
             $logo = $boutique->getLogo();
             if ($logoFile && $logoFile['error'] == 0) {
-                $targetDir = __DIR__ . '/../../uploads/logos/';
+                $targetDir = __DIR__ . '/../uploads/logos/';
                 $logo = time() . '_' . basename($logoFile["name"]);
                 $targetFile = $targetDir . $logo;
                 if (move_uploaded_file($logoFile["tmp_name"], $targetFile)) {
@@ -111,10 +111,16 @@ class BoutiqueController {
 
     public function deleteBoutique($id, $id_utilisateur) {
         try {
+            // First, delete all vehicles associated with this boutique
+            $sqlDeleteVehicles = "DELETE FROM vehicule WHERE id_boutique = :id";
+            $stmtDeleteVehicles = $this->pdo->prepare($sqlDeleteVehicles);
+            $stmtDeleteVehicles->execute([':id' => $id]);
+
+            // Then, delete the boutique
             $sql = "DELETE FROM boutique WHERE id_boutique = :id AND id_utilisateur = :id_utilisateur";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':id' => $id, ':id_utilisateur' => $id_utilisateur]);
-            return ['success' => true, 'message' => 'Boutique supprimée avec succès.'];
+            return ['success' => true, 'message' => 'Boutique et ses véhicules ont été supprimés avec succès.'];
         } catch (PDOException $e) {
             return ['success' => false, 'message' => 'Erreur lors de la suppression: ' . $e->getMessage()];
         }
