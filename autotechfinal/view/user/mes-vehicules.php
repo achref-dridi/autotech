@@ -514,6 +514,25 @@ if (isset($_GET['success'])) {
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
+
+            <!-- Section Rendez-Vous -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <div>
+                    <h2><i class="fas fa-calendar-check mr-2"></i> Rendez-Vous</h2>
+                    <p>Gérez vos rendez-vous de maintenance et services</p>
+                </div>
+                <a href="prendre-rendez-vous.php" class="btn-add">
+                    <i class="fas fa-plus-circle"></i> Prendre un rendez-vous
+                </a>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <a href="mes-rendez-vous.php" class="btn" style="background: rgba(37, 99, 235, 0.1); color: var(--primary-light); border: 1px solid var(--primary-color); padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; display: inline-block;">
+                        <i class="fas fa-list mr-2"></i> Voir mes rendez-vous actifs
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
