@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../controller/UtilisateurController.php';
 
@@ -17,16 +18,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $telephone = $_POST['telephone'] ?? '';
     $mot_de_passe = $_POST['mot_de_passe'] ?? '';
+    $captcha = trim($_POST['captcha'] ?? '');
     
-    $result = $userController->inscrire($nom, $prenom, $email, $mot_de_passe, $telephone);
-    
-    if ($result['success']) {
-        $loginResult = $userController->connecter($email, $mot_de_passe);
-        header('Location: ../public/index.php');
-        exit();
-    } else {
-        $message = $result['message'];
+    // Verify CAPTCHA
+    if (!isset($_SESSION['captcha_code']) || $captcha !== $_SESSION['captcha_code']) {
+        $message = 'Code CAPTCHA incorrect.';
         $messageType = 'danger';
+    } else {
+        $result = $userController->inscrire($nom, $prenom, $email, $mot_de_passe, $telephone);
+        
+        if ($result['success']) {
+            $loginResult = $userController->connecter($email, $mot_de_passe);
+            header('Location: ../public/index.php');
+            exit();
+        } else {
+            $message = $result['message'];
+            $messageType = 'danger';
+        }
     }
 }
 ?>
@@ -188,6 +196,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="password" class="form-control" id="confirmer_mot_de_passe" name="confirmer_mot_de_passe" placeholder="••••••">
                 </div>
 
+                <div class="mb-3">
+                    <label for="captcha" class="form-label">Vérification anti-robot <span class="required-star">*</span></label>
+                    <div class="mb-2" style="display: flex; align-items: center; gap: 10px;">
+                        <img src="captcha.php" alt="CAPTCHA" id="captcha-image" style="border-radius: 8px; border: 1px solid #e0e0e0;">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="reloadCaptcha()" title="Recharger le CAPTCHA" style="padding: 8px 12px;">🔄</button>
+                    </div>
+                    <input type="text" class="form-control" id="captcha" name="captcha" placeholder="Entrez le code ci-dessus" required>
+                </div>
+
                 <button type="submit" class="btn btn-signup">S'inscrire</button>
 
                 <div class="login-link">
@@ -200,5 +217,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../../assets/js/jquery.min.js"></script>
     <script src="../../assets/js/bootstrap.min.js"></script>
     <script src="../../assets/js/validation.js"></script>
+    <script>
+        function reloadCaptcha() {
+            document.getElementById('captcha-image').src = 'captcha.php?' + new Date().getTime();
+            document.getElementById('captcha').value = '';
+            document.getElementById('captcha').focus();
+        }
+
+        function validerInscription() {
+            const nom = document.getElementById('nom').value.trim();
+            const prenom = document.getElementById('prenom').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const motDePasse = document.getElementById('mot_de_passe').value;
+            const confirmerMotDePasse = document.getElementById('confirmer_mot_de_passe').value;
+            const captcha = document.getElementById('captcha').value.trim();
+
+            if (!nom || nom.length < 2) {
+                alert('Le nom doit contenir au moins 2 caractères');
+                return false;
+            }
+            if (!prenom || prenom.length < 2) {
+                alert('Le prénom doit contenir au moins 2 caractères');
+                return false;
+            }
+            if (!email || !email.includes('@')) {
+                alert('Veuillez entrer un email valide');
+                return false;
+            }
+            if (!motDePasse || motDePasse.length < 6) {
+                alert('Le mot de passe doit contenir au moins 6 caractères');
+                return false;
+            }
+            if (motDePasse !== confirmerMotDePasse) {
+                alert('Les mots de passe ne correspondent pas');
+                return false;
+            }
+            if (!captcha) {
+                alert('Veuillez entrer le code CAPTCHA');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </body>
 </html>

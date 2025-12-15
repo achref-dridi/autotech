@@ -161,5 +161,54 @@ class UtilisateurController {
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
+
+    public function getUserByEmail($email) {
+        try {
+            $sql = "SELECT * FROM utilisateur WHERE email = :email LIMIT 1";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':email' => $email]);
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function saveResetToken($userId, $token, $expires) {
+        try {
+            $sql = "UPDATE utilisateur SET reset_token = :token, reset_expires = :expires WHERE id_utilisateur = :id";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                ':token' => $token,
+                ':expires' => $expires,
+                ':id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getUserByResetToken($token) {
+        try {
+            $sql = "SELECT * FROM utilisateur WHERE reset_token = :token AND reset_expires > NOW() LIMIT 1";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':token' => $token]);
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function updatePasswordAndClearToken($userId, $hashedPassword) {
+        try {
+            $sql = "UPDATE utilisateur SET mot_de_passe = :password, reset_token = NULL, reset_expires = NULL WHERE id_utilisateur = :id";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                ':password' => $hashedPassword,
+                ':id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 ?>

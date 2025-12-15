@@ -15,7 +15,9 @@ CREATE TABLE utilisateur (
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     statut ENUM('actif', 'inactif', 'suspendu') DEFAULT 'actif',
-    role ENUM('utilisateur', 'admin') DEFAULT 'utilisateur'
+    role ENUM('utilisateur', 'admin') DEFAULT 'utilisateur',
+    reset_token VARCHAR(255),
+    reset_expires DATETIME
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE vehicule (

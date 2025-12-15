@@ -172,6 +172,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="signup-link">
                     Pas encore de compte? <a href="signup.php">S'inscrire</a>
                 </div>
+
+                <div class="signup-link" style="margin-top: 15px;">
+                    <a href="forgot-password.php">Mot de passe oublié ?</a>
+                </div>
                 
                 <div class="back-home">
                     <a href="../public/index.php">← Retour à l'accueil</a>
