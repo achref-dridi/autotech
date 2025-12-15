@@ -3,15 +3,16 @@ session_start();
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../controller/UtilisateurController.php';
 
+require_once __DIR__ . '/../../PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/../../PHPMailer/src/Exception.php';
+require_once __DIR__ . '/../../PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $controller = new UtilisateurController();
 $message = "";
 $messageType = "";
-
-// Check if PHPMailer is available
-$usePhpMailer = file_exists(__DIR__ . '/../../vendor/autoload.php');
-if ($usePhpMailer) {
-    require_once __DIR__ . '/../../vendor/autoload.php';
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $email = trim($_POST['email'] ?? '');
@@ -31,45 +32,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 
                 $emailSent = false;
 
-                // PHPMailer
-                if ($usePhpMailer) {
-                    try {
-                        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-                        $mail->isSMTP();
-                        $mail->Host       = 'smtp.gmail.com';
-                        $mail->SMTPAuth   = true;
-                        $mail->Username   = 'amiraboubakri34@gmail.com';
-                        $mail->Password   = 'xvdh pdze jtts kwlf';
-                        $mail->Port       = 587;
-                        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-                        $mail->CharSet    = 'UTF-8';
+                try {
+                    $mail = new PHPMailer(true);
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'amiraboubakri34@gmail.com';
+                    $mail->Password   = 'xvdh pdze jtts kwlf';
+                    $mail->Port       = 587;
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->CharSet    = 'UTF-8';
 
-                        $mail->setFrom('no-reply@autotech.com', 'AutoTech');
-                        $mail->addAddress($email);
-                        $mail->isHTML(true);
-                        $mail->Subject = 'Réinitialisation de votre mot de passe - AutoTech';
-                        $mail->Body = "
-                            <div style='font-family:Arial,sans-serif; max-width:600px; margin:auto; padding:20px; border:1px solid #ddd; border-radius:10px; background:#f9f9f9;'>
-                                <h2 style='color:#1a5fb4;'>Bonjour {$user['prenom']},</h2>
-                                <p>Vous avez demandé une réinitialisation de mot de passe sur <strong>AutoTech</strong>.</p>
-                                <p style='text-align:center; margin:30px 0;'>
-                                    <a href='{$reset_link}' style='background:#1a5fb4; color:white; padding:15px 35px; text-decoration:none; border-radius:50px; font-weight:bold; font-size:16px;'>
-                                        Réinitialiser mon mot de passe
-                                    </a>
-                                </p>
-                                <p>Ce lien expire dans <strong>1 heure</strong>.</p>
-                                <hr>
-                                <small style='color:#666;'>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</small>
-                            </div>
-                        ";
-                        $mail->send();
-                        $emailSent = true;
-                    } catch (Exception $e) {
-                        // PHPMailer failed, fallback will be used
-                    }
+                    $mail->setFrom('no-reply@autotech.com', 'AutoTech');
+                    $mail->addAddress($email);
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Réinitialisation de votre mot de passe - AutoTech';
+                    $mail->Body = "
+                        <div style='font-family:Arial,sans-serif; max-width:600px; margin:auto; padding:20px; border:1px solid #ddd; border-radius:10px; background:#f9f9f9;'>
+                            <h2 style='color:#1a5fb4;'>Bonjour {$user['prenom']},</h2>
+                            <p>Vous avez demandé une réinitialisation de mot de passe sur <strong>AutoTech</strong>.</p>
+                            <p style='text-align:center; margin:30px 0;'>
+                                <a href='{$reset_link}' style='background:#1a5fb4; color:white; padding:15px 35px; text-decoration:none; border-radius:50px; font-weight:bold; font-size:16px;'>
+                                    Réinitialiser mon mot de passe
+                                </a>
+                            </p>
+                            <p>Ce lien expire dans <strong>1 heure</strong>.</p>
+                            <hr>
+                            <small style='color:#666;'>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</small>
+                        </div>
+                    ";
+                    $mail->send();
+                    $emailSent = true;
+                } catch (Exception $e) {
                 }
 
-                // Fallback: PHP mail() silently
                 if (!$emailSent) {
                     @mail($email, 'Réinitialisation de votre mot de passe - AutoTech', $mail->Body ?? '', "MIME-Version: 1.0\r\nContent-type: text/html; charset=UTF-8\r\nFrom: no-reply@autotech.com\r\n");
                     $emailSent = true;
@@ -88,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
