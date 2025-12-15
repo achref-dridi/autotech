@@ -11,17 +11,18 @@ class VehiculeController {
     
 
     public function createVehicule($id_utilisateur, $marque, $modele, $annee, $carburant, $kilometrage, 
-                                   $couleur, $transmission, $prix_journalier, $description, $image_principale) {
+                                   $couleur, $transmission, $prix_journalier, $description, $image_principale, $id_boutique = null) {
         try {
             $sql = "INSERT INTO vehicule 
-                    (id_utilisateur, marque, modele, annee, carburant, kilometrage, couleur, transmission, 
+                    (id_utilisateur, id_boutique, marque, modele, annee, carburant, kilometrage, couleur, transmission, 
                      prix_journalier, description, image_principale)
-                    VALUES (:id_utilisateur, :marque, :modele, :annee, :carburant, :kilometrage, :couleur, 
+                    VALUES (:id_utilisateur, :id_boutique, :marque, :modele, :annee, :carburant, :kilometrage, :couleur, 
                             :transmission, :prix_journalier, :description, :image_principale)";
             
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 ':id_utilisateur' => $id_utilisateur,
+                ':id_boutique' => $id_boutique,
                 ':marque' => $marque,
                 ':modele' => $modele,
                 ':annee' => $annee,
@@ -134,7 +135,35 @@ class VehiculeController {
     }
     
 
-    public function rechercherVehicules($marque = null, $prix_max = null, $carburant = null) {
+    public function getVehiculesByBoutique($id_boutique) {
+        try {
+            $sql = "SELECT v.*, u.nom, u.prenom, b.nom_boutique
+                    FROM vehicule v
+                    LEFT JOIN utilisateur u ON v.id_utilisateur = u.id_utilisateur
+                    LEFT JOIN boutique b ON v.id_boutique = b.id_boutique
+                    WHERE v.id_boutique = :id_boutique
+                    ORDER BY v.created_at DESC";
+            
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':id_boutique' => $id_boutique]);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    public function countVehiculesByBoutique($id_boutique) {
+        try {
+            $sql = "SELECT COUNT(*) AS total FROM vehicule WHERE id_boutique = :id_boutique";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':id_boutique' => $id_boutique]);
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            return ['total' => 0];
+        }
+    }
+
+    public function searchVehicules($marque = null, $prix_max = null, $carburant = null) {
         $sql = "SELECT v.*, u.nom, u.prenom, u.email, u.telephone, u.ville
                 FROM vehicule v
                 LEFT JOIN utilisateur u ON v.id_utilisateur = u.id_utilisateur
