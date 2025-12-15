@@ -103,6 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
             color: var(--text-primary);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .navbar {
@@ -110,6 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar .container {
+            max-width: 1140px;
         }
 
         .navbar-brand img {
@@ -130,10 +136,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: rgba(37, 99, 235, 0.1);
         }
 
-        .container {
+        .main-container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 40px 20px;
+            flex: 1;
         }
 
         .back-btn {
@@ -177,16 +184,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 12px;
             border-left: 4px solid;
             margin-bottom: 2rem;
+            padding: 1rem 1.5rem;
         }
 
         .alert-danger {
-            background: rgba(239, 68, 68, 0.1);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.1));
             color: #fca5a5;
             border-left-color: #ef4444;
         }
 
         .alert-success {
-            background: rgba(16, 185, 129, 0.1);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
             color: #86efac;
             border-left-color: #10b981;
         }
@@ -218,6 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-color: var(--primary-color);
             color: var(--text-primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
         }
 
         .form-control::placeholder {
@@ -259,10 +268,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .technician-card input[type="radio"]:checked {
             accent-color: var(--primary-color);
-        }
-
-        .technician-card input[type="radio"]:checked ~ .technician-info {
-            display: flex;
         }
 
         .technician-card.selected {
@@ -333,6 +338,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             cursor: pointer;
             transition: all 0.3s;
             font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
         }
 
         .btn-submit:hover {
@@ -344,8 +350,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn-cancel {
             flex: 1;
             min-width: 150px;
-            background: transparent;
-            border: 2px solid var(--border-color);
+            background: rgba(148, 163, 184, 0.2);
+            border: 1px solid var(--border-color);
             color: var(--text-secondary);
             padding: 1rem;
             font-weight: 600;
@@ -361,20 +367,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .btn-cancel:hover {
+            background: rgba(148, 163, 184, 0.3);
             border-color: var(--text-secondary);
             color: var(--text-primary);
             text-decoration: none;
+            transform: translateY(-2px);
         }
 
         .required {
             color: #ef4444;
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--text-secondary);
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer .container {
+            max-width: 1140px;
+        }
+
+        footer h2 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        footer img {
+            height: 40px;
+            filter: brightness(1.1);
+        }
+
+        footer p, footer li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--primary-light);
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .icon {
+            color: var(--primary-light);
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .technician-contact {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="../public/index.php"><img src="../../images/off_logo.png" alt="AutoTech"></a>
+            <a class="navbar-brand" href="../public/index.php">
+                <img src="../../images/off_logo.png" alt="AutoTech">
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -396,7 +470,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <li class="nav-item">
                             <a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" href="mes-rendez-vous.php">Rendez-Vous</a>
                         </li>
                         <li class="nav-item">
@@ -411,7 +485,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </nav>
 
-    <div class="container">
+    <div class="main-container">
         <a href="mes-rendez-vous.php" class="back-btn">
             <i class="fas fa-arrow-left"></i> Retour aux Rendez-Vous
         </a>
@@ -531,6 +605,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+
+    <footer>
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="mb-4">
+                        <h2><a href="#"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a></h2>
+                        <p>Autotech est conçu pour centraliser et simplifier l'expérience automobile dans un environnement digital de pointe.</p>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="mb-4">
+                        <h2>Vous avez des Questions?</h2>
+                        <div class="mb-3">
+                            <ul>
+                                <li><span class="icon"><i class="fas fa-map-marker-alt"></i></span><span>Esprit, Ariana sogra, Ariana, Tunisie</span></li>
+                                <li><a href="#"><span class="icon"><i class="fas fa-phone"></i></span><span>+216 33 856 909</span></a></li>
+                                <li><a href="#"><span class="icon"><i class="fas fa-envelope"></i></span><span>AutoTech@gmail.tn</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés | AutoTech</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>

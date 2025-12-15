@@ -58,13 +58,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             --primary-light: #3b82f6;
             --secondary-color: #10b981;
             --dark-bg: #0f172a;
-            --light-bg: #f8fafc;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
-            color: #f1f5f9;
+            color: var(--text-primary);
+            min-height: 100vh;
         }
 
         .navbar {
@@ -74,13 +85,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
+        .navbar .container {
+            max-width: 1140px;
+        }
+
         .navbar-brand img {
             height: 45px;
             filter: brightness(1.1);
         }
 
         .nav-link {
-            color: #cbd5e1 !important;
+            color: var(--text-secondary) !important;
             font-weight: 500;
             transition: all 0.3s ease;
             padding: 0.5rem 1rem !important;
@@ -88,24 +103,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .nav-link:hover, .nav-item.active .nav-link {
-            color: #3b82f6 !important;
+            color: var(--primary-light) !important;
             background: rgba(37, 99, 235, 0.1);
         }
 
-        .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+        .main-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+        }
 
         .form-card {
-            background: #1e293b;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(37, 99, 235, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .form-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
         }
 
         .form-title {
             font-size: 28px;
             font-weight: 700;
-            color: #f1f5f9;
+            color: var(--text-primary);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -113,43 +138,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .form-subtitle {
-            color: #cbd5e1;
+            color: var(--text-muted);
             margin-bottom: 30px;
             font-size: 14px;
         }
 
         .form-group label {
             font-weight: 600;
-            color: #f1f5f9;
+            color: var(--text-secondary);
             margin-bottom: 8px;
         }
 
         .form-control {
             border-radius: 8px;
-            border: 1px solid rgba(37, 99, 235, 0.3);
+            border: 1px solid var(--border-color);
             padding: 12px 15px;
-            background: #0f172a;
-            color: #f1f5f9;
-            transition: all 0.2s;
+            font-size: 14px;
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            background: #1e293b;
+            background: rgba(15, 23, 42, 0.7);
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-            color: #f1f5f9;
+            color: var(--text-primary);
+            outline: none;
         }
 
         .form-control::placeholder {
-            color: #64748b;
-        }
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            color: var(--text-muted);
         }
 
         .logo-upload {
@@ -190,24 +209,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .file-input-label {
             display: inline-block;
             padding: 10px 20px;
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             color: white;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
         }
 
         .file-input-label:hover {
-            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
             text-decoration: none;
+            color: white;
         }
 
         .alert {
-            border-radius: 8px;
+            border-radius: 12px;
             border: none;
+            padding: 1rem 1.5rem;
             margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+            color: #10b981;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.1));
+            color: #ef4444;
+            border-left: 4px solid #ef4444;
         }
 
         .btn-submit {
@@ -216,38 +252,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             border: none;
             color: white;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
         }
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
             color: white;
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
         }
 
         .btn-back {
             width: 100%;
             padding: 14px;
-            background: #e2e8f0;
-            border: none;
-            color: #334155;
-            border-radius: 8px;
+            background: rgba(148, 163, 184, 0.2);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 10px;
             font-weight: 600;
             text-decoration: none;
             display: block;
             text-align: center;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .btn-back:hover {
-            background: #cbd5e1;
-            color: #334155;
+            background: rgba(148, 163, 184, 0.3);
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
             text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--text-secondary);
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer .container {
+            max-width: 1140px;
+        }
+
+        footer h2 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        footer img {
+            height: 40px;
+            filter: brightness(1.1);
+        }
+
+        footer p, footer li {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--primary-light);
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .icon {
+            color: var(--primary-light);
+            margin-right: 0.5rem;
         }
 
         @media (max-width: 768px) {
@@ -258,12 +350,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             .form-title {
                 font-size: 24px;
             }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="../public/index.php"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a>
+            <a class="navbar-brand" href="../public/index.php">
+                <img src="../../images/off_logo.png" alt="logo.png" id="img_logo">
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -282,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </nav>
 
-    <div class="container">
+    <div class="main-container">
         <div class="form-card">
             <h1 class="form-title">
                 <i class="fas fa-store"></i>Ajouter une Boutique
@@ -336,6 +431,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+
+    <footer>
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="mb-4">
+                        <h2><a href="#"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a></h2>
+                        <p>Autotech est conçu pour centraliser et simplifier l'expérience automobile dans un environnement digital de pointe.</p>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="mb-4">
+                        <h2>Vous avez des Questions?</h2>
+                        <div class="mb-3">
+                            <ul>
+                                <li><span class="icon"><i class="fas fa-map-marker-alt"></i></span><span>Esprit, Ariana sogra, Ariana, Tunisie</span></li>
+                                <li><a href="#"><span class="icon"><i class="fas fa-phone"></i></span><span>+216 33 856 909</span></a></li>
+                                <li><a href="#"><span class="icon"><i class="fas fa-envelope"></i></span><span>AutoTech@gmail.tn</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés | AutoTech</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
         document.getElementById('logoInput').addEventListener('change', function(e) {
