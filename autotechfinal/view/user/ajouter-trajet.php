@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <style>
         :root {
             --primary-color: #2563eb;
@@ -55,6 +56,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             --border-color: #334155;
         }
 
+        /* Map Modal Styles */
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+        }
+        .leaflet-container {
+            font-family: 'Poppins', sans-serif;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -160,10 +171,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-right: none;
         }
 
-        .input-group-append .btn {
-            border: 1px solid var(--border-color);
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--primary-light);
+        .input-group-append .btn:not(.btn-map) {
+             border: 1px solid var(--border-color);
+             background: rgba(37, 99, 235, 0.1);
+             color: var(--primary-light);
+        }
+        
+        /* Custom Input Group for Map Button */
+        .input-group-append .btn-map {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .input-group-append .btn-map:hover {
+            background: var(--primary-dark);
         }
 
         .form-row {
@@ -282,7 +306,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="fas fa-map-pin" style="color: var(--primary-light);"></i>
                             Lieu de départ
                         </label>
-                        <input type="text" class="form-control" id="lieu_depart" name="lieu_depart" placeholder="Ex: Tunis" required>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="lieu_depart" name="lieu_depart" placeholder="Ex: Tunis" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-map" type="button" onclick="openMap('lieu_depart')">
+                                    <i class="fas fa-map-marker-alt"></i> Carte
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -290,7 +321,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="fas fa-map-pin" style="color: var(--primary-light); transform: rotate(180deg);"></i>
                             Lieu d'arrivée
                         </label>
-                        <input type="text" class="form-control" id="lieu_arrivee" name="lieu_arrivee" placeholder="Ex: Sfax" required>
+                         <div class="input-group">
+                            <input type="text" class="form-control" id="lieu_arrivee" name="lieu_arrivee" placeholder="Ex: Sfax" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-map" type="button" onclick="openMap('lieu_arrivee')">
+                                    <i class="fas fa-map-marker-alt"></i> Carte
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-row">
@@ -348,6 +386,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </section>
 
+    <!-- Map Modal -->
+    <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="background: var(--card-bg); color: var(--text-primary);">
+                <div class="modal-header" style="border-bottom-color: var(--border-color);">
+                    <h5 class="modal-title" id="mapModalLabel">Choisir un lieu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: var(--text-primary);">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="row mb-4">
@@ -364,5 +419,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        let map;
+        let marker;
+        let currentTargetId;
+
+        function initMap() {
+            if (map) return;
+            
+            // Filter brightness for dark mode map tiles if desired, or use a dark tile layer
+            // Using standard OSM for now
+            map = L.map('map').setView([34.0, 9.0], 6); // Centered on Tunisia
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            map.on('click', function(e) {
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                marker = L.marker(e.latlng).addTo(map);
+                
+                // Reverse Geocoding
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${e.latlng.lat}&lon=${e.latlng.lng}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const address = data.display_name;
+                        // Simplify address if needed (optional)
+                        // For now using full display name
+                        document.getElementById(currentTargetId).value = address;
+                        
+                        // Close modal after short delay
+                        setTimeout(() => {
+                            $('#mapModal').modal('hide');
+                        }, 500);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Erreur lors de la récupération de l\'adresse');
+                    });
+            });
+        }
+
+        function openMap(targetId) {
+            currentTargetId = targetId;
+            $('#mapModal').modal('show');
+            
+            // Leaflet needs explicit size invalidation when shown in a modal
+            setTimeout(() => {
+                if (!map) {
+                    initMap();
+                } else {
+                    map.invalidateSize();
+                }
+            }, 500);
+        }
+    </script>
 </body>
 </html>

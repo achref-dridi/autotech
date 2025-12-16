@@ -99,6 +99,14 @@ $stats = [
   </div>
 </div>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        #map { height: 400px; width: 100%; border-radius: 4px; }
+        /* Ensure map modal is above the add modal */
+        #mapModal { z-index: 1060; }
+        .input-group-text { cursor: pointer; }
+        .input-group-text:hover { background-color: #e9ecef; }
+    </style>
 <?php if ($message): ?>
 <div class="alert alert-<?= $messageType ?> alert-dismissible fade show">
   <?= htmlspecialchars($message) ?>
@@ -179,6 +187,7 @@ $stats = [
   </div>
 </div>
 
+<!-- Main Modal for Add/Edit -->
 <div class="modal fade" id="addModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -204,11 +213,21 @@ $stats = [
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label">Lieu Départ *</label>
-              <input type="text" class="form-control" name="lieu_depart" id="lieu_depart" required>
+              <div class="input-group">
+                <input type="text" class="form-control" name="lieu_depart" id="lieu_depart" required>
+                <span class="input-group-text bg-primary text-white" onclick="openMap('lieu_depart')">
+                    <i class="fas fa-map-marker-alt"></i>
+                </span>
+              </div>
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label">Lieu Arrivée *</label>
-              <input type="text" class="form-control" name="lieu_arrivee" id="lieu_arrivee" required>
+               <div class="input-group">
+                <input type="text" class="form-control" name="lieu_arrivee" id="lieu_arrivee" required>
+                <span class="input-group-text bg-primary text-white" onclick="openMap('lieu_arrivee')">
+                    <i class="fas fa-map-marker-alt"></i>
+                </span>
+              </div>
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label">Date Départ *</label>
@@ -250,7 +269,29 @@ $stats = [
   </div>
 </div>
 
+<!-- Map Modal (Stacked) -->
+<div class="modal fade" id="mapModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Choisir sur la carte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
+let map;
+let marker;
+let currentTargetId;
+let mapModal;
+let isMapNavigation = false; // Flag to prevent form reset when switching modals
+
 function editTrajet(trajet) {
   document.getElementById('modalTitle').textContent = 'Modifier le Trajet';
   document.getElementById('formAction').value = 'update';
@@ -264,14 +305,31 @@ function editTrajet(trajet) {
   document.getElementById('places_disponibles').value = trajet.places_disponibles || '';
   document.getElementById('description').value = trajet.description || '';
   document.getElementById('statut').value = trajet.statut || 'disponible';
-  new bootstrap.Modal(document.getElementById('addModal')).show();
+  
+  const modalEl = document.getElementById('addModal');
+  const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+  modal.show();
 }
 
 document.getElementById('addModal').addEventListener('hidden.bs.modal', function() {
-  document.querySelector('#addModal form').reset();
-  document.getElementById('modalTitle').textContent = 'Ajouter un Trajet';
-  document.getElementById('formAction').value = 'add';
-  document.getElementById('trajetId').value = '';
+  // Only reset if we are NOT switching to the map
+  if (!isMapNavigation) {
+      document.querySelector('#addModal form').reset();
+      document.getElementById('modalTitle').textContent = 'Ajouter un Trajet';
+      document.getElementById('formAction').value = 'add';
+      document.getElementById('trajetId').value = '';
+  }
+});
+
+// Configure Map Modal cleanup
+document.getElementById('mapModal').addEventListener('hidden.bs.modal', function() {
+    // When map closes, reopen the addModal
+    const addModalEl = document.getElementById('addModal');
+    const addModal = bootstrap.Modal.getInstance(addModalEl) || new bootstrap.Modal(addModalEl);
+    addModal.show();
+    
+    // Reset flag after transition
+    setTimeout(() => { isMapNavigation = false; }, 500);
 });
 
 $(document).ready(function() {
@@ -280,6 +338,55 @@ $(document).ready(function() {
     order: [[4, 'desc']]
   });
 });
+
+function initMap() {
+    if (map) return;
+    map = L.map('map').setView([34.0, 9.0], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    map.on('click', function(e) {
+        if (marker) map.removeLayer(marker);
+        marker = L.marker(e.latlng).addTo(map);
+        
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${e.latlng.lat}&lon=${e.latlng.lng}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.display_name && currentTargetId) {
+                    document.getElementById(currentTargetId).value = data.display_name;
+                    // Hiding mapModal will trigger the event listener to reopen addModal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('mapModal'));
+                    modal.hide();
+                }
+            })
+            .catch(err => console.error(err));
+    });
+}
+
+function openMap(targetId) {
+    currentTargetId = targetId;
+    isMapNavigation = true; // Set flag prevents form reset
+    
+    // Hide addModal
+    const addModalEl = document.getElementById('addModal');
+    const addModal = bootstrap.Modal.getInstance(addModalEl) || new bootstrap.Modal(addModalEl);
+    addModal.hide();
+    
+    // Show mapModal
+    const mapModalEl = document.getElementById('mapModal');
+    if (!mapModal) {
+        mapModal = new bootstrap.Modal(mapModalEl);
+    }
+    // Need small delay or direct show? Direct show is fine usually
+    mapModal.show();
+    
+    // Invalidate size
+    mapModalEl.addEventListener('shown.bs.modal', function () {
+        if(!map) initMap();
+        else map.invalidateSize();
+    }, { once: true });
+}
 </script>
 
 <?php require_once __DIR__ . '/partials/footer.php'; ?>
