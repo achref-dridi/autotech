@@ -18,7 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userController->connecter($email, $mot_de_passe);
     
     if ($result['success']) {
-        header('Location: ../public/index.php');
+        // Redirect admin to admin dashboard
+        if ($email === 'admin@autotech.tn' || (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin')) {
+            header('Location: ../../admin/index.php');
+        } else {
+            header('Location: ../public/index.php');
+        }
         exit();
     } else {
         $message = $result['message'];
