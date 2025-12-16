@@ -3,11 +3,35 @@ require_once __DIR__ . '/../../config/config.php';
 
 function getTableData($table, $pdo) {
     try {
-        $sql = "SELECT * FROM $table ORDER BY date_creation DESC, id_" . substr($table, 0, -1) . " DESC";
+        // Map table names to their ID columns
+        $idColumns = [
+            'utilisateur' => 'id_utilisateur',
+            'vehicule' => 'id_vehicule',
+            'boutique' => 'id_boutique',
+            'technicien' => 'id_technicien',
+            'rendez_vous' => 'id_rdv',
+            'reservation' => 'id_reservation',
+            'trajet' => 'id_trajet',
+            'reservation_trajet' => 'id_reservation_trajet'
+        ];
+        
+        $idColumn = $idColumns[$table] ?? 'id';
+        
+        // Try to order by date_creation first, then by ID
+        $sql = "SELECT * FROM $table ORDER BY date_creation DESC, $idColumn DESC";
         $stmt = $pdo->query($sql);
         return $stmt->fetchAll();
     } catch (PDOException $e) {
-        return [];
+        // If date_creation doesn't exist, just order by ID
+        try {
+            $idColumn = $idColumns[$table] ?? 'id';
+            $sql = "SELECT * FROM $table ORDER BY $idColumn DESC";
+            $stmt = $pdo->query($sql);
+            return $stmt->fetchAll();
+        } catch (PDOException $e2) {
+            error_log("Error in getTableData for table $table: " . $e2->getMessage());
+            return [];
+        }
     }
 }
 
