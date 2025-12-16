@@ -360,9 +360,12 @@ $vehicules = $vehiculeController->getAllVehicules();
                     <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
                     <li class="nav-item active"><a class="nav-link" href="voitures.php">Voitures</a></li>
                     <li class="nav-item"><a class="nav-link" href="boutiques.php">Boutiques</a></li>
-                    <?php if ($userController->estConnecte()): ?>
+                    <?php
+                    require_once __DIR__ . '/../../controller/UtilisateurController.php';
+                    $userController = new UtilisateurController();
+                    if ($userController->estConnecte()): ?>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-boutiques.php">Mes Boutiques</a></li>
-                                                <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                     <?php else: ?>
@@ -441,6 +444,23 @@ $vehicules = $vehiculeController->getAllVehicules();
             <?php endif; ?>
         </div>
     </section>
+
+    <!-- Section Mes Réservations -->
+    <?php if ($userController->estConnecte()): ?>
+    <section class="py-5" style="background: rgba(37, 99, 235, 0.05);">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2><i class="fas fa-calendar-check mr-2"></i> Mes Réservations</h2>
+                    <p>Accédez à vos réservations de véhicules</p>
+                </div>
+                <a href="../user/mes-reservations.php" class="btn-add">
+                    <i class="fas fa-list mr-1"></i> Voir mes réservations
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <footer>
         <div class="container">

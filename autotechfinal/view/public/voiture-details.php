@@ -433,7 +433,9 @@ if ($id > 0) {
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php"><img src="../../images/off_logo.png" alt="logo.png" id="img_logo"></a>
+            <a class="navbar-brand" href="index.php">
+                <img src="../../images/off_logo.png" alt="logo.png" id="img_logo">
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -442,9 +444,11 @@ if ($id > 0) {
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
                     <li class="nav-item active"><a class="nav-link" href="voitures.php">Voitures</a></li>
+                    <li class="nav-item"><a class="nav-link" href="boutiques.php">Boutiques</a></li>
                     <?php if ($userController->estConnecte()): ?>
-                        <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../user/mes-boutiques.php">Mes Boutiques</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                     <?php else: ?>
                         <li class="nav-item"><a class="nav-link" href="../auth/login.php">Connexion</a></li>
@@ -588,6 +592,15 @@ if ($id > 0) {
                                     <?php if (!empty($vehicule['telephone'])): ?>
                                         <a href="tel:<?= htmlspecialchars($vehicule['telephone']) ?>" class="btn btn-success btn-block mb-3">
                                             <i class="fas fa-phone mr-2"></i> Appeler
+                                        </a>
+                                    <?php endif; ?>
+                                    <?php if ($userController->estConnecte() && $vehicule['id_utilisateur'] != $_SESSION['user_id']): ?>
+                                        <a href="../user/prendre-reservation.php?id=<?= $vehicule['id_vehicule'] ?>" class="btn btn-warning btn-block mb-3">
+                                            <i class="fas fa-calendar-check mr-2"></i> Réserver
+                                        </a>
+                                    <?php elseif (!$userController->estConnecte()): ?>
+                                        <a href="../auth/login.php" class="btn btn-warning btn-block mb-3">
+                                            <i class="fas fa-calendar-check mr-2"></i> Réserver
                                         </a>
                                     <?php endif; ?>
                                     <a href="voitures.php" class="btn btn-secondary btn-block">

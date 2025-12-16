@@ -99,6 +99,34 @@ CREATE TABLE IF NOT EXISTS rendez_vous (
 ) ENGINE=InnoDB;
 
 
+CREATE TABLE IF NOT EXISTS reservation (
+    id_reservation INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_vehicule INT UNSIGNED NOT NULL,
+    id_utilisateur INT UNSIGNED NOT NULL,
+    date_debut DATETIME NOT NULL,
+    date_fin DATETIME NOT NULL,
+    statut VARCHAR(50) DEFAULT 'en attente',
+    prix_total DECIMAL(10,2),
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    CONSTRAINT fk_reservation_vehicule
+        FOREIGN KEY (id_vehicule)
+        REFERENCES vehicule(id_vehicule)
+        ON DELETE CASCADE,
+    
+    CONSTRAINT fk_reservation_utilisateur
+        FOREIGN KEY (id_utilisateur)
+        REFERENCES utilisateur(id_utilisateur)
+        ON DELETE CASCADE,
+    
+    INDEX idx_vehicule (id_vehicule),
+    INDEX idx_utilisateur (id_utilisateur),
+    INDEX idx_dates (date_debut, date_fin),
+    INDEX idx_statut (statut)
+) ENGINE=InnoDB;
+
+
 -- Sample technicians data
 INSERT INTO technicien (nom, specialite, telephone, email, disponibilite) VALUES
 ('Moemen Toukebri', 'Diagnostic moteur', '98765432', 'ali.tech@autotech.tn', 'actif'),
