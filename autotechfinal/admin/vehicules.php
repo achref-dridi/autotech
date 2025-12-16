@@ -21,8 +21,8 @@ if (isset($_GET['delete']) && isset($_GET['id'])) {
 // Handle update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
     $id = $_POST['id'];
-    $id_utilisateur = $_POST['id_utilisateur'] ?? null;
-    $id_boutique = $_POST['id_boutique'] ?? null;
+    $id_utilisateur = !empty($_POST['id_utilisateur']) ? (int)$_POST['id_utilisateur'] : null;
+    $id_boutique = !empty($_POST['id_boutique']) ? (int)$_POST['id_boutique'] : null;
     $marque = $_POST['marque'] ?? '';
     $modele = $_POST['modele'] ?? '';
     $annee = $_POST['annee'] ?? '';
@@ -81,8 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Handle add
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
-    $id_utilisateur = $_POST['id_utilisateur'] ?? null;
-    $id_boutique = $_POST['id_boutique'] ?? null;
+    $id_utilisateur = !empty($_POST['id_utilisateur']) ? (int)$_POST['id_utilisateur'] : null;
+    $id_boutique = !empty($_POST['id_boutique']) ? (int)$_POST['id_boutique'] : null;
     $marque = $_POST['marque'] ?? '';
     $modele = $_POST['modele'] ?? '';
     $annee = $_POST['annee'] ?? '';
