@@ -141,8 +141,15 @@ $pageTitle = $pageTitle ?? 'Tableau de Bord - Administration AutoTech';
                   <p>Réservations Trajets</p>
                 </a>
               </li>
+              <li class="nav-item <?= basename($_SERVER['PHP_SELF']) == 'signalements.php' ? 'active' : '' ?>">
+                <a href="signalements.php">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <p>Signalements</p>
+                </a>
+              </li>
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
+
                   <i class="fa fa-ellipsis-h"></i>
                 </span>
                 <h4 class="text-section">Navigation</h4>

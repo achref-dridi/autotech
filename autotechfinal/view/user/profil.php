@@ -578,8 +578,191 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
                     </div>
                 </div>
             </div>
+
+            <!-- Reporting Section -->
+            <?php
+            require_once __DIR__ . '/../../controller/SignalementController.php';
+            require_once __DIR__ . '/../../controller/VehiculeController.php';
+            require_once __DIR__ . '/../../controller/BoutiqueController.php';
+            
+            $signalementController = new SignalementController();
+            $vehiculeController = new VehiculeController();
+            $boutiqueController = new BoutiqueController(); 
+            
+            // Handle Report Submission
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'nouveau_signalement') {
+                $id_objet = null;
+                if ($_POST['type_objet'] === 'vehicule') {
+                    $id_objet = $_POST['id_objet_vehicule'] ?? null;
+                } elseif ($_POST['type_objet'] === 'boutique') {
+                    $id_objet = $_POST['id_objet_boutique'] ?? null;
+                }
+
+                $data = [
+                    'type_objet' => $_POST['type_objet'],
+                    'id_objet' => $id_objet,
+                    'sujet' => $_POST['sujet'],
+                    'description' => $_POST['description']
+                ];
+                $res = $signalementController->ajouterSignalement($_SESSION['user_id'], $data);
+                $message = $res['message'];
+                $messageType = $res['success'] ? 'success' : 'danger';
+            }
+            
+            $mesSignalements = $signalementController->getMesSignalements($_SESSION['user_id']);
+            $vehicules = $vehiculeController->getAllVehicules(); 
+            $boutiques = $boutiqueController->getAllBoutiques();
+            ?>
+            
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="form-card">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Mes Signalements</h4>
+                        <?php if (empty($mesSignalements)): ?>
+                            <p class="text-muted text-center py-4">Aucun signalement effectué.</p>
+                        <?php else: ?>
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Sujet</th>
+                                            <th>Type</th>
+                                            <th>Statut</th>
+                                            <th>Réponse Admin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($mesSignalements as $sig): ?>
+                                            <tr>
+                                                <td><?= date('d/m/Y', strtotime($sig['date_creation'])) ?></td>
+                                                <td><?= htmlspecialchars($sig['sujet']) ?></td>
+                                                <td>
+                                                    <span class="badge badge-secondary"><?= ucfirst($sig['type_objet']) ?></span>
+                                                    <?php if($sig['id_objet']): ?> 
+                                                        <small class="text-muted">#<?= $sig['id_objet'] ?></small>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php 
+                                                    $badgeClass = 'secondary';
+                                                    if ($sig['statut'] === 'traite') $badgeClass = 'success';
+                                                    if ($sig['statut'] === 'ignore') $badgeClass = 'danger';
+                                                    if ($sig['statut'] === 'en_attente') $badgeClass = 'warning';
+                                                    ?>
+                                                    <span class="badge badge-<?= $badgeClass ?>"><?= ucfirst(str_replace('_', ' ', $sig['statut'])) ?></span>
+                                                </td>
+                                                <td>
+                                                    <?php if($sig['reponse_admin']): ?>
+                                                        <small><?= htmlspecialchars($sig['reponse_admin']) ?></small>
+                                                        <?php if($sig['piece_jointe_admin']): ?>
+                                                            <br><a href="../../uploads/signalements/<?= htmlspecialchars($sig['piece_jointe_admin']) ?>" target="_blank" class="text-primary"><i class="fas fa-paperclip"></i> Pièce jointe</a>
+                                                        <?php endif; ?>
+                                                    <?php else: ?>
+                                                        <span class="text-muted">-</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                
+                <div class="col-12">
+                    <div class="form-card">
+                        <h4><i class="fas fa-bullhorn"></i> Signaler un problème</h4>
+                        <form method="POST">
+                            <input type="hidden" name="action" value="nouveau_signalement">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Type de problème</label>
+                                    <select class="form-control" name="type_objet" id="type_objet" required onchange="toggleObjetSelect()">
+                                        <option value="autre">Général / Autre</option>
+                                        <option value="vehicule">Véhicule</option>
+                                        <option value="boutique">Boutique</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <!-- Select for Vehicles -->
+                                    <div id="group_vehicule" style="display:none;">
+                                        <label>Choisir le Véhicule</label>
+                                        <select class="form-control" name="id_objet_vehicule">
+                                            <option value="">-- Sélectionner un véhicule --</option>
+                                            <?php foreach ($vehicules as $v): ?>
+                                                <option value="<?= $v['id_vehicule'] ?>">
+                                                    <?= htmlspecialchars($v['marque'] . ' ' . $v['modele'] . ' #' . $v['id_vehicule']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <!-- Select for Boutiques -->
+                                    <div id="group_boutique" style="display:none;">
+                                        <label>Choisir la Boutique</label>
+                                        <select class="form-control" name="id_objet_boutique">
+                                            <option value="">-- Sélectionner une boutique --</option>
+                                            <?php foreach ($boutiques as $b): ?>
+                                                <option value="<?= $b['id_boutique'] ?>">
+                                                    <?= htmlspecialchars($b['nom_boutique'] . ' #' . $b['id_boutique']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Sujet</label>
+                                <select class="form-control" name="sujet" required>
+                                    <option value="">Sélectionnez un motif...</option>
+                                    <option value="fraude">Fraude / Arnaque</option>
+                                    <option value="technique_site">Problème technique (Site)</option>
+                                    <option value="comportement">Comportement inapproprié</option>
+                                    <option value="vehicule_non_conforme">Véhicule non conforme</option>
+                                    <option value="autre">Autre</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Description détaillée</label>
+                                <textarea class="form-control" name="description" rows="4" required placeholder="Expliquez le problème en détail..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-warning text-white">
+                                <i class="fas fa-paper-plane"></i> Envoyer le signalement
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
+    
+    <script>
+    function toggleObjetSelect() {
+        const type = document.getElementById('type_objet').value;
+        const groupVehicule = document.getElementById('group_vehicule');
+        const groupBoutique = document.getElementById('group_boutique');
+        
+        // Hide all first
+        groupVehicule.style.display = 'none';
+        groupBoutique.style.display = 'none';
+        
+        if (type === 'vehicule') {
+            groupVehicule.style.display = 'block';
+        } else if (type === 'boutique') {
+            groupBoutique.style.display = 'block';
+        }
+    }
+    
+    // Run on load to set initial state
+    document.addEventListener('DOMContentLoaded', toggleObjetSelect);
+    </script>
+    
     <footer>
         <div class="container">
             <div class="row mb-4">

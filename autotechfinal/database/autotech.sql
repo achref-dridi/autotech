@@ -176,10 +176,32 @@ CREATE TABLE IF NOT EXISTS reservation_trajet (
 ) ENGINE=InnoDB;
 
 
--- Sample technicians data
 INSERT INTO technicien (nom, specialite, telephone, email, disponibilite) VALUES
 ('Moemen Toukebri', 'Diagnostic moteur', '98765432', 'ali.tech@autotech.tn', 'actif'),
 ('Khaled Ben Salah', 'Réparation freins', '98765433', 'khaled.tech@autotech.tn', 'actif'),
 ('Fatima Ezzahra', 'Électricité automobile', '98765434', 'fatima.tech@autotech.tn', 'actif'),
 ('Nabil Jebali', 'Changement pneus', '98765435', 'nabil.tech@autotech.tn', 'actif'),
 ('Amel Kareem', 'Révision générale', '98765436', 'amel.tech@autotech.tn', 'actif');
+
+CREATE TABLE IF NOT EXISTS signalement (
+    id_signalement INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_utilisateur INT UNSIGNED NOT NULL,
+    type_objet ENUM('vehicule', 'boutique', 'autre') NOT NULL,
+    id_objet INT UNSIGNED DEFAULT NULL,
+    sujet VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    statut ENUM('en_attente', 'traite', 'ignore') DEFAULT 'en_attente',
+    reponse_admin TEXT,
+    piece_jointe_admin VARCHAR(255),
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_mise_a_jour TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_signalement_utilisateur
+        FOREIGN KEY (id_utilisateur)
+        REFERENCES utilisateur(id_utilisateur)
+        ON DELETE CASCADE,
+    
+    INDEX idx_utilisateur (id_utilisateur),
+    INDEX idx_statut (statut)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
