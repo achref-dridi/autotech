@@ -441,6 +441,7 @@ $vehiculesVedette = array_slice($vehicules, 0, 8);
                     <li class="nav-item"><a class="nav-link" href="boutiques.php">Boutiques</a></li>
                     <li class="nav-item"><a class="nav-link" href="trajets.php">Trajets</a></li>
                     <?php if ($userController->estConnecte()): ?>
+                        <li class="nav-item"><a class="nav-link" href="../user/mes-boutiques.php">Mes Boutiques</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-trajets.php">Mes Trajets</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>

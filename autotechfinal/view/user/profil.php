@@ -421,6 +421,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
                     <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/trajets.php">Trajets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
                     <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
                     <li class="nav-item"><a class="nav-link" href="mes-trajets.php">Mes Trajets</a></li>
                     <li class="nav-item active"><a class="nav-link" href="profil.php">Mon Profil</a></li>

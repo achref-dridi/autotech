@@ -321,9 +321,13 @@ if (isset($_GET['success'])) {
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/trajets.php">Trajets</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="mes-reservations-trajets.php">Mes Rés. Trajets</a></li>
-                    <li class="nav-item"><a class="nav-link" href="profil.php">Profil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-trajets.php">Mes Trajets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                 </ul>
             </div>

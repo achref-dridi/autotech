@@ -374,6 +374,7 @@ if (isset($_GET['success'])) {
                     <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/trajets.php">Trajets</a></li>
                     <?php if ($userController->estConnecte()): ?>
+                        <li class="nav-item"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
                         <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
                         <li class="nav-item"><a class="nav-link" href="mes-trajets.php">Mes Trajets</a></li>
                         <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>

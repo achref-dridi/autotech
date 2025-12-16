@@ -335,8 +335,7 @@ $trajets = $trajetController->getAllTrajets();
                     <li class="nav-item"><a class="nav-link" href="voitures.php">Voitures</a></li>
                     <li class="nav-item"><a class="nav-link" href="boutiques.php">Boutiques</a></li>
                     <li class="nav-item active"><a class="nav-link" href="trajets.php">Trajets</a></li>
-                    <?php if ($userController->estConnecte()): ?>
-                        <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
+                    <?php if ($userController->estConnecte()): ?>                            <li class="nav-item"><a class="nav-link" href="../user/mes-boutiques.php">Mes Boutiques</a></li>                        <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-trajets.php">Mes Trajets</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
@@ -351,7 +350,14 @@ $trajets = $trajetController->getAllTrajets();
 
     <section class="hero-section">
         <div class="container">
-            <h1><i class="fas fa-road mr-2"></i> Trajets Disponibles</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1><i class="fas fa-road mr-2"></i> Trajets Disponibles</h1>
+                <?php if ($userController->estConnecte()): ?>
+                    <a href="../user/mes-reservations-trajets.php" class="btn btn-secondary" style="font-size: 0.9rem;">
+                        <i class="fas fa-history mr-2"></i> Mes Réservations
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
     </section>
 
