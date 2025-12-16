@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Tableau de Bord - Administration AutoTech</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="assets/img/kaiadmin/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <!-- Fonts and icons -->
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="assets/css/demo.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="index.html" class="logo">
+              <img
+                src="assets/img/kaiadmin/off_logo.png"
+                alt="navbar brand"
+                class="navbar-brand"
+                height="20"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item active">
+                <a href="index.html" class="collapsed" aria-expanded="false">
+                  <i class="fas fa-tachometer-alt"></i>
+                  <p>Tableau de Bord</p>
+                </a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Administration</h4>
+              </li>
+              <li class="nav-item">
+                <a href="admin-techniciens-list.php">
+                  <i class="fas fa-user-cog"></i>
+                  <p>Techniciens</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin-rdv-list.php">
+                  <i class="fas fa-calendar-alt"></i>
+                  <p>Rendez-vous</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin-profile.php">
+                  <i class="fas fa-user-shield"></i>
+                  <p>Profil Admin</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../frontOffice/index.php">
+                  <i class="fas fa-eye"></i>
+                  <p>Voir le Site</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="main-panel">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="index.html" class="logo">
+                <img
+                  src="assets/img/off_logo.png"
+                  alt="navbar brand"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav
+            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+          >
+            <div class="container-fluid">
+              <nav
+                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+              >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-search pe-1">
+                      <i class="fa fa-search search-icon"></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Rechercher ..."
+                    class="form-control"
+                  />
+                </div>
+              </nav>
+
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li
+                  class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
+                >
+                  <a
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    role="button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    <i class="fa fa-search"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-search animated fadeIn">
+                    <form class="navbar-left navbar-form nav-search">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          placeholder="Rechercher ..."
+                          class="form-control"
+                        />
+                      </div>
+                    </form>
+                  </ul>
+                </li>
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="messageDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i class="fa fa-envelope"></i>
+                  </a>
+                  <ul
+                    class="dropdown-menu messages-notif-box animated fadeIn"
+                    aria-labelledby="messageDropdown"
+                  >
+                    <li>
+                      <div
+                        class="dropdown-title d-flex justify-content-between align-items-center"
+                      >
+                        Messages
+                        <a href="#" class="small">Marquer tout comme lu</a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="message-notif-scroll scrollbar-outer">
+                        <div class="notif-center">
+                          <a href="#">
+                            <div class="notif-img">
+                              <img
+                                src="assets/img/jm_denis.jpg"
+                                alt="Img Profile"
+                              />
+                            </div>
+                            <div class="notif-content">
+                              <span class="subject">Jimmy Denis</span>
+                              <span class="block"> Comment allez-vous ? </span>
+                              <span class="time">Il y a 5 minutes</span>
+                            </div>
+                          </a>
+                          <a href="#">
+                            <div class="notif-img">
+                              <img
+                                src="assets/img/chadengle.jpg"
+                                alt="Img Profile"
+                              />
+                            </div>
+                            <div class="notif-content">
+                              <span class="subject">Chad</span>
+                              <span class="block"> OK, Merci ! </span>
+                              <span class="time">Il y a 12 minutes</span>
+                            </div>
+                          </a>
+                          <a href="#">
+                            <div class="notif-img">
+                              <img
+                                src="assets/img/mlane.jpg"
+                                alt="Img Profile"
+                              />
+                            </div>
+                            <div class="notif-content">
+                              <span class="subject">Jhon Doe</span>
+                              <span class="block">
+                                Prêt pour la réunion aujourd'hui...
+                              </span>
+                              <span class="time">Il y a 12 minutes</span>
+                            </div>
+                          </a>
+                          <a href="#">
+                            <div class="notif-img">
+                              <img
+                                src="assets/img/talha.jpg"
+                                alt="Img Profile"
+                              />
+                            </div>
+                            <div class="notif-content">
+                              <span class="subject">Talha</span>
+                              <span class="block"> Salut, Comment ça va ? </span>
+                              <span class="time">Il y a 17 minutes</span>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <a class="see-all" href="javascript:void(0);"
+                        >Voir tous les messages<i class="fa fa-angle-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="notifDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i class="fa fa-bell"></i>
+                    <span class="notification">4</span>
+                  </a>
+                  <ul
+                    class="dropdown-menu notif-box animated fadeIn"
+                    aria-labelledby="notifDropdown"
+                  >
+                    <li>
+                      <div class="dropdown-title">
+                        Vous avez 4 nouvelles notifications
+                      </div>
+                    </li>
+                    <li>
+                      <div class="notif-scroll scrollbar-outer">
+                        <div class="notif-center">
+                          <a href="#">
+                            <div class="notif-icon notif-primary">
+                              <i class="fa fa-user-plus"></i>
+                            </div>
+                            <div class="notif-content">
+                              <span class="block"> Nouvel utilisateur inscrit </span>
+                              <span class="time">Il y a 5 minutes</span>
+                            </div>
+                          </a>
+                          <a href="#">
+                            <div class="notif-icon notif-success">
+                              <i class="fa fa-comment"></i>
+                            </div>
+                            <div class="notif-content">
+                              <span class="block">
+                                Rahmad a commenté sur Admin
+                              </span>
+                              <span class="time">Il y a 12 minutes</span>
+                            </div>
+                          </a>
+                          <a href="#">
+                            <div class="notif-img">
+                              <img
+                                src="assets/img/profile2.jpg"
+                                alt="Img Profile"
+                              />
+                            </div>
+                            <div class="notif-content">
+                              <span class="block">
+                                Reza a envoyé des messages
+                              </span>
+                              <span class="time">Il y a 12 minutes</span>
+                            </div>
+                          </a>
+                          <a href="#">
+                            <div class="notif-icon notif-danger">
+                              <i class="fa fa-heart"></i>
+                            </div>
+                            <div class="notif-content">
+                              <span class="block"> Farrah a apprécié Admin </span>
+                              <span class="time">Il y a 17 minutes</span>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <a class="see-all" href="javascript:void(0);"
+                        >Voir toutes les notifications<i class="fa fa-angle-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a
+                    class="nav-link"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-layer-group"></i>
+                  </a>
+                  <div class="dropdown-menu quick-actions animated fadeIn">
+                    <div class="quick-actions-header">
+                      <span class="title mb-1">Actions Rapides</span>
+                      <span class="subtitle op-7">Raccourcis</span>
+                    </div>
+                    <div class="quick-actions-scroll scrollbar-outer">
+                      <div class="quick-actions-items">
+                        <div class="row m-0">
+                          <a class="col-6 col-md-4 p-0" href="#">
+                            <div class="quick-actions-item">
+                              <div class="avatar-item bg-danger rounded-circle">
+                                <i class="far fa-calendar-alt"></i>
+                              </div>
+                              <span class="text">Calendrier</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="#">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-warning rounded-circle"
+                              >
+                                <i class="fas fa-map"></i>
+                              </div>
+                              <span class="text">Cartes</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="#">
+                            <div class="quick-actions-item">
+                              <div class="avatar-item bg-info rounded-circle">
+                                <i class="fas fa-file-excel"></i>
+                              </div>
+                              <span class="text">Rapports</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="#">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-success rounded-circle"
+                              >
+                                <i class="fas fa-envelope"></i>
+                              </div>
+                              <span class="text">Emails</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="#">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-primary rounded-circle"
+                              >
+                                <i class="fas fa-file-invoice-dollar"></i>
+                              </div>
+                              <span class="text">Facture</span>
+                            </div>
+                          </a>
+                          <a class="col-6 col-md-4 p-0" href="#">
+                            <div class="quick-actions-item">
+                              <div
+                                class="avatar-item bg-secondary rounded-circle"
+                              >
+                                <i class="fas fa-credit-card"></i>
+                              </div>
+                              <span class="text">Paiements</span>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a
+                    class="dropdown-toggle profile-pic"
+                    data-bs-toggle="dropdown"
+                    href="#"
+                    aria-expanded="false"
+                  >
+                    <div class="avatar-sm">
+                      <img
+                        src="assets/img/profile.jpg"
+                        alt="..."
+                        class="avatar-img rounded-circle"
+                      />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Salut,</span>
+                      <span class="fw-bold">Hizrian</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div class="avatar-lg">
+                            <img
+                              src="assets/img/profile.jpg"
+                              alt="image profile"
+                              class="avatar-img rounded"
+                            />
+                          </div>
+                          <div class="u-text">
+                            <h4>Hizrian</h4>
+                            <p class="text-muted">hello@example.com</p>
+                            <a
+                              href="profile.html"
+                              class="btn btn-xs btn-secondary btn-sm"
+                              >Voir le Profil</a
+                            >
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Mon Profil</a>
+                        <a class="dropdown-item" href="#">Mon Solde</a>
+                        <a class="dropdown-item" href="#">Boîte de Réception</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Paramètres du Compte</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Déconnexion</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container">
+          <div class="page-inner">
+            <!-- Header -->
+            <div class="row mb-5">
+              <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h1 class="display-6 fw-bold text-primary mb-2">
+                      <i class="fas fa-tachometer-alt me-3"></i>Tableau de Bord
+                    </h1>
+                    <p class="text-muted mb-0">Bienvenue dans votre espace d'administration AutoTech</p>
+                  </div>
+                  <div class="text-end">
+                    <small class="text-muted d-block">Derniere connexion</small>
+                    <strong id="lastLogin">24/11/2025 à 22:44</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-5">
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 class="card-title text-muted text-uppercase small">Total Rendez-vous</h6>
+                        <h2 class="fw-bold text-primary mb-0" id="totalAppointments">0</h2>
+                      </div>
+                      <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                           style="width: 60px; height: 60px;">
+                        <i class="fas fa-calendar-check text-primary fa-2x"></i>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <small class="text-success">
+                        <i class="fas fa-chart-line me-1"></i>
+                        Toutes les demandes
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 class="card-title text-muted text-uppercase small">En Attente</h6>
+                        <h2 class="fw-bold text-warning mb-0" id="pendingAppointments">0</h2>
+                      </div>
+                      <div class="icon-wrapper bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                           style="width: 60px; height: 60px;">
+                        <i class="fas fa-clock text-warning fa-2x"></i>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <small class="text-warning">
+                        <i class="fas fa-exclamation-circle me-1"></i>
+                        Necessitent validation
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 class="card-title text-muted text-uppercase small">Confirmes</h6>
+                        <h2 class="fw-bold text-success mb-0" id="confirmedAppointments">0</h2>
+                      </div>
+                      <div class="icon-wrapper bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                           style="width: 60px; height: 60px;">
+                        <i class="fas fa-check-circle text-success fa-2x"></i>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <small class="text-success">
+                        <i class="fas fa-thumbs-up me-1"></i>
+                        Rendez-vous valides
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card stat-card border-0 shadow-sm h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 class="card-title text-muted text-uppercase small">Techniciens</h6>
+                        <h2 class="fw-bold text-info mb-0" id="totalTechnicians">0</h2>
+                      </div>
+                      <div class="icon-wrapper bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                           style="width: 60px; height: 60px;">
+                        <i class="fas fa-users text-info fa-2x"></i>
+                      </div>
+                    </div>
+                    <div class="mt-3">
+                      <small class="text-info">
+                        <i class="fas fa-user-cog me-1"></i>
+                        Experts disponibles
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Appointment Statistics Chart -->
+            <div class="row mb-5">
+              <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0 text-primary">
+                      <i class="fas fa-chart-pie me-2"></i>Statistiques des Rendez-vous
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-container" style="position: relative; height: 400px;">
+                      <canvas id="appointmentChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-5">
+              <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0 text-primary">
+                      <i class="fas fa-bolt me-2"></i>Actions Rapides
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="row g-3">
+                      <div class="col-lg-3 col-md-6">
+                        <a href="admin-techniciens-list.php" class="card action-card h-100 border-0 text-decoration-none">
+                          <div class="card-body text-center p-4">
+                            <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                 style="width: 70px; height: 70px;">
+                                <i class="fas fa-user-cog text-primary fa-2x"></i>
+                            </div>
+                            <h6 class="text-primary mb-2">Gerer les Techniciens</h6>
+                            <p class="text-muted small mb-0">Voir et modifier la liste des experts</p>
+                          </div>
+                        </a>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6">
+                        <a href="admin-rdv-list.php" class="card action-card h-100 border-0 text-decoration-none position-relative">
+                          <div class="card-body text-center p-4">
+                            <div class="icon-wrapper bg-success bg-opacity-10 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                 style="width: 70px; height: 70px;">
+                                <i class="fas fa-calendar-alt text-success fa-2x"></i>
+                            </div>
+                            <h6 class="text-success mb-2">Rendez-vous</h6>
+                            <p class="text-muted small mb-0">Gerer les demandes des boutiques</p>
+                            <span class="badge bg-warning position-absolute top-0 start-100 translate-middle" id="newAppointmentsBadge">0 nouveau</span>
+                          </div>
+                        </a>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6">
+                        <a href="admin-profile.php" class="card action-card h-100 border-0 text-decoration-none">
+                          <div class="card-body text-center p-4">
+                            <div class="icon-wrapper bg-info bg-opacity-10 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                 style="width: 70px; height: 70px;">
+                                <i class="fas fa-user-shield text-info fa-2x"></i>
+                            </div>
+                            <h6 class="text-info mb-2">Profil Admin</h6>
+                            <p class="text-muted small mb-0">Modifier vos informations</p>
+                          </div>
+                        </a>
+                      </div>
+
+                      <div class="col-lg-3 col-md-6">
+                        <a href="../frontOffice/index.php" class="card action-card h-100 border-0 text-decoration-none">
+                          <div class="card-body text-center p-4">
+                            <div class="icon-wrapper bg-warning bg-opacity-10 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                 style="width: 70px; height: 70px;">
+                                <i class="fas fa-eye text-warning fa-2x"></i>
+                            </div>
+                            <h6 class="text-warning mb-2">Voir le Site</h6>
+                            <p class="text-muted small mb-0">Acceder à l'interface publique</p>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="row">
+              <div class="col-lg-8 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0 text-primary">
+                      <i class="fas fa-history me-2"></i>Activite Recente
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Technicien</th>
+                            <th>Date</th>
+                            <th>Service</th>
+                            <th>Statut</th>
+                          </tr>
+                        </thead>
+                        <tbody id="recentActivityBody">
+                          <!-- Dynamic content will be loaded here -->
+                          <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                              <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                              Chargement des données...
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-center mt-3">
+                      <a href="admin-rdv-list.php" class="btn btn-outline-primary btn-sm">
+                        Voir tous les rendez-vous
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm h-100">
+                  <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0 text-primary">
+                      <i class="fas fa-chart-pie me-2"></i>Statistiques
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-4">
+                      <h6 class="text-muted mb-3">Repartition des Rendez-vous</h6>
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>Confirmes</span>
+                        <span class="fw-bold text-success" id="statsConfirmed">0</span>
+                      </div>
+                      <div class="progress mb-3" style="height: 8px;">
+                        <div class="progress-bar bg-success" id="progressConfirmed" style="width: 0%"></div>
+                      </div>
+
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>En attente</span>
+                        <span class="fw-bold text-warning" id="statsPending">0</span>
+                      </div>
+                      <div class="progress mb-3" style="height: 8px;">
+                        <div class="progress-bar bg-warning" id="progressPending" style="width: 0%"></div>
+                      </div>
+
+                      <div class="d-flex justify-content-between mb-2">
+                        <span>Annules</span>
+                        <span class="fw-bold text-danger" id="statsCancelled">0</span>
+                      </div>
+                      <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-danger" id="progressCancelled" style="width: 0%"></div>
+                      </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                      <div class="bg-light rounded p-3">
+                        <h4 class="text-primary mb-1" id="statsTechnicians">0</h4>
+                        <small class="text-muted">Techniciens actifs</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-center">
+            <div class="copyright">
+              2025, AutoTech - Système de gestion des rendez-vous
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- jQuery Vector Maps -->
+    <script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+    <script src="assets/js/plugin/jsvectormap/world.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="assets/js/setting-demo.js"></script>
+    <script src="assets/js/demo.js"></script>
+
+    <script>
+      // Global chart variable
+      let appointmentChart = null;
+
+      // Function to fetch dashboard statistics
+      async function fetchDashboardStats() {
+        try {
+          const response = await fetch('simple_stats.php');
+          const stats = await response.json();
+          
+          // Update statistics cards
+          const totalAppointments = stats.pending + stats.confirmed + stats.cancelled;
+          document.getElementById('totalAppointments').textContent = totalAppointments;
+          document.getElementById('pendingAppointments').textContent = stats.pending;
+          document.getElementById('confirmedAppointments').textContent = stats.confirmed;
+          document.getElementById('totalTechnicians').textContent = stats.techs;
+          
+          // Update statistics section
+          document.getElementById('statsConfirmed').textContent = stats.confirmed;
+          document.getElementById('statsPending').textContent = stats.pending;
+          document.getElementById('statsCancelled').textContent = stats.cancelled;
+          document.getElementById('statsTechnicians').textContent = stats.techs;
+          
+          // Update new appointments badge
+          document.getElementById('newAppointmentsBadge').textContent = stats.pending + ' nouveau';
+          
+          // Calculate percentages for progress bars
+          if (totalAppointments > 0) {
+            const confirmedPercent = (stats.confirmed / totalAppointments) * 100;
+            const pendingPercent = (stats.pending / totalAppointments) * 100;
+            const cancelledPercent = (stats.cancelled / totalAppointments) * 100;
+            
+            document.getElementById('progressConfirmed').style.width = confirmedPercent + '%';
+            document.getElementById('progressPending').style.width = pendingPercent + '%';
+            document.getElementById('progressCancelled').style.width = cancelledPercent + '%';
+          }
+          
+          // Update the chart with real data
+          updateChart(stats.confirmed, stats.pending, stats.cancelled);
+          
+        } catch (error) {
+          console.error('Error fetching dashboard stats:', error);
+          showError('Erreur lors du chargement des statistiques');
+        }
+      }
+
+      // Function to update the chart with real data
+      function updateChart(confirmed, pending, cancelled) {
+        if (appointmentChart) {
+          appointmentChart.data.datasets[0].data = [confirmed, pending, cancelled];
+          appointmentChart.update();
+        }
+      }
+
+      // Function to fetch recent appointments
+      async function fetchRecentAppointments() {
+        try {
+          const response = await fetch('getRecentAppointments.php');
+          if (!response.ok) throw new Error('Network response was not ok');
+          
+          const appointments = await response.json();
+          updateRecentActivityTable(appointments);
+        } catch (error) {
+          console.error('Error fetching recent appointments:', error);
+          document.getElementById('recentActivityBody').innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Erreur lors du chargement des donnees
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      // Function to update the recent activity table
+      function updateRecentActivityTable(appointments) {
+        const tbody = document.getElementById('recentActivityBody');
+        if (!tbody) return;
+        
+        if (!appointments || appointments.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">
+                Aucun rendez-vous récent
+              </td>
+            </tr>
+          `;
+          return;
+        }
+        
+        tbody.innerHTML = '';
+        
+        appointments.forEach(appointment => {
+          const row = document.createElement('tr');
+          
+          // Determine status badge
+          let statusBadge = '';
+          let statusClass = '';
+          switch(appointment.statut) {
+            case 'confirme':
+              statusBadge = 'Confirme';
+              statusClass = 'bg-success';
+              break;
+            case 'en_attente':
+              statusBadge = 'En attente';
+              statusClass = 'bg-warning';
+              break;
+            case 'annule':
+              statusBadge = 'Annule';
+              statusClass = 'bg-danger';
+              break;
+            default:
+              statusBadge = appointment.statut || 'Inconnu';
+              statusClass = 'bg-secondary';
+          }
+          
+          // Format date
+          let formattedDate = 'Date invalide';
+          try {
+            const appointmentDate = new Date(appointment.date_rdv);
+            if (!isNaN(appointmentDate.getTime())) {
+              formattedDate = appointmentDate.toLocaleDateString('fr-FR') + ' ' + 
+                            appointmentDate.toLocaleTimeString('fr-FR', { 
+                              hour: '2-digit', 
+                              minute: '2-digit' 
+                            });
+            }
+          } catch (e) {
+            console.error('Error formatting date:', e);
+          }
+          
+          row.innerHTML = `
+            <td><strong>#${appointment.id_rdv || 'N/A'}</strong></td>
+            <td>${appointment.technicien_nom || 'Non assigné'}</td>
+            <td>${formattedDate}</td>
+            <td>
+              <span class="badge bg-light text-dark">${appointment.type_intervention || 'Non spécifié'}</span>
+            </td>
+            <td>
+              <span class="badge ${statusClass}">${statusBadge}</span>
+            </td>
+          `;
+          
+          tbody.appendChild(row);
+        });
+      }
+
+      // Function to show error message
+      function showError(message) {
+        // You can implement a toast notification here
+        console.error('Dashboard Error:', message);
+      }
+
+      // Update last login time
+      function updateLastLogin() {
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('fr-FR') + ' à ' + 
+                            now.toLocaleTimeString('fr-FR', { 
+                              hour: '2-digit', 
+                              minute: '2-digit' 
+                            });
+        document.getElementById('lastLogin').textContent = formattedDate;
+      }
+
+      // Initialize dashboard when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        // Update last login
+        updateLastLogin();
+        
+        // Initialize chart
+        const ctx = document.getElementById('appointmentChart').getContext('2d');
+        appointmentChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['Confirmes', 'En Attente', 'Annules'],
+            datasets: [{
+              data: [0, 0, 0], // Start with zeros, will be updated
+              backgroundColor: [
+                'rgba(25, 135, 84, 0.8)',
+                'rgba(255, 193, 7, 0.8)',
+                'rgba(220, 53, 69, 0.8)'
+              ],
+              borderColor: [
+                'rgba(25, 135, 84, 1)',
+                'rgba(255, 193, 7, 1)',
+                'rgba(220, 53, 69, 1)'
+              ],
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20,
+                  usePointStyle: true
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                    return label + ': ' + value + ' (' + percentage + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+        
+        // Fetch initial data
+        fetchDashboardStats();
+        fetchRecentAppointments();
+        
+        // Update stats every 30 seconds
+        setInterval(fetchDashboardStats, 30000);
+        
+        // Update recent appointments every minute
+        setInterval(fetchRecentAppointments, 60000);
+      });
+
+      // Sparkline charts (keep existing)
+      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#177dff",
+        fillColor: "rgba(23, 125, 255, 0.14)",
+      });
+
+      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#f3545d",
+        fillColor: "rgba(243, 84, 93, .14)",
+      });
+
+      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+        type: "line",
+        height: "70",
+        width: "100%",
+        lineWidth: "2",
+        lineColor: "#ffa534",
+        fillColor: "rgba(255, 165, 52, .14)",
+      });
+    </script>
+  </body>
+</html>
