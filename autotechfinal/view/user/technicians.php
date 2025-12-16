@@ -339,7 +339,7 @@ $techniciens = $technicianController->getAllTechniciens();
                             <a class="nav-link" href="profil.php">Mon Profil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../../controller/UtilisateurController.php?action=deconnexion">Déconnexion</a>
+                            <a class="nav-link" href="../auth/logout.php">Déconnexion</a>
                         </li>
                     <?php endif; ?>
                 </ul>
