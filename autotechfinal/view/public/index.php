@@ -1,13 +1,23 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../controller/VehiculeController.php';
+require_once __DIR__ . '/../../controller/BoutiqueController.php';
+require_once __DIR__ . '/../../controller/TrajetController.php';
 require_once __DIR__ . '/../../controller/UtilisateurController.php';
 
 $vehiculeController = new VehiculeController();
+$boutiqueController = new BoutiqueController();
+$trajetController = new TrajetController();
 $userController = new UtilisateurController();
 
 $vehicules = $vehiculeController->getAllVehicules();
 $vehiculesVedette = array_slice($vehicules, 0, 8);
+
+$boutiques = $boutiqueController->getAllBoutiques();
+$boutiquesVedette = array_slice($boutiques, 0, 6);
+
+$trajets = $trajetController->getAllTrajets();
+$trajetsVedette = array_slice($trajets, 0, 6);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -517,6 +527,101 @@ $vehiculesVedette = array_slice($vehicules, 0, 8);
                             </div>
                         <?php endif; ?>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOUTIQUES SECTION -->
+    <section class="ftco-section ftco-no-pt bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 heading-section text-center mb-5">
+                    <span class="subheading">Nos Partenaires</span>
+                    <h2 class="mb-2">Boutiques en Vedette</h2>
+                </div>
+            </div>
+            <div class="row">
+                <?php if (!empty($boutiquesVedette)): ?>
+                    <?php foreach ($boutiquesVedette as $b): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="car-wrap rounded" style="background: var(--card-bg); padding: 20px;">
+                                <div class="text">
+                                    <h2 class="mb-2"><a href="boutiques.php?id=<?= $b['id_boutique'] ?>" style="color: var(--text-primary);"><?= htmlspecialchars($b['nom_boutique']) ?></a></h2>
+                                    <p style="color: var(--text-muted); margin-bottom: 10px;">
+                                        <i class="fas fa-map-marker-alt mr-2"></i><?= htmlspecialchars($b['adresse']) ?>
+                                    </p>
+                                    <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                                        <i class="fas fa-phone mr-2"></i><?= htmlspecialchars($b['telephone']) ?>
+                                    </p>
+                                    <p class="d-flex mb-0 d-block">
+                                        <a href="boutiques.php?id=<?= $b['id_boutique'] ?>" class="btn btn-secondary py-2 ml-0">Voir la Boutique</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-md-12 text-center">
+                        <p style="color: var(--text-muted);">Aucune boutique disponible pour le moment.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <a href="boutiques.php" class="btn btn-primary">Voir toutes les boutiques</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRAJETS SECTION -->
+    <section class="ftco-section ftco-no-pt bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 heading-section text-center mb-5">
+                    <span class="subheading">Partage de Trajets</span>
+                    <h2 class="mb-2">Trajets en Vedette</h2>
+                </div>
+            </div>
+            <div class="row">
+                <?php if (!empty($trajetsVedette)): ?>
+                    <?php foreach ($trajetsVedette as $t): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="car-wrap rounded" style="background: var(--card-bg); padding: 20px;">
+                                <div class="text">
+                                    <h2 class="mb-2" style="color: var(--text-primary);">
+                                        <i class="fas fa-road mr-2"></i><?= htmlspecialchars($t['lieu_depart']) ?> → <?= htmlspecialchars($t['lieu_arrivee']) ?>
+                                    </h2>
+                                    <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                                        <i class="fas fa-calendar-alt mr-2"></i><?= date('d/m H:i', strtotime($t['date_depart'])) ?>
+                                    </p>
+                                    <p style="color: var(--text-secondary); margin-bottom: 10px;">
+                                        <i class="fas fa-hourglass-end mr-2"></i><?= htmlspecialchars($t['duree_minutes']) ?> minutes
+                                    </p>
+                                    <p class="price" style="color: var(--primary-light); font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">
+                                        <?= number_format($t['prix'], 2) ?> DT
+                                    </p>
+                                    <p class="d-flex mb-0 d-block">
+                                        <?php if ($userController->estConnecte()): ?>
+                                            <a href="../user/prendre-trajet.php?id=<?= $t['id_trajet'] ?>" class="btn btn-secondary py-2 ml-0">Réserver</a>
+                                        <?php else: ?>
+                                            <a href="../auth/login.php" class="btn btn-secondary py-2 ml-0">Se connecter</a>
+                                        <?php endif; ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-md-12 text-center">
+                        <p style="color: var(--text-muted);">Aucun trajet disponible pour le moment.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <a href="trajets.php" class="btn btn-primary">Voir tous les trajets</a>
                 </div>
             </div>
         </div>
