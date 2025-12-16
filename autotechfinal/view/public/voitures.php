@@ -62,8 +62,9 @@ $vehicules = $vehiculeController->getAllVehicules();
             color: var(--text-secondary) !important;
             font-weight: 500;
             transition: all 0.3s ease;
-            padding: 0.5rem 1rem !important;
+            padding: 0.35rem 0.75rem !important;
             border-radius: 6px;
+            font-size: 0.9rem;
         }
 
         .nav-link:hover, .nav-item.active .nav-link {
@@ -360,12 +361,13 @@ $vehicules = $vehiculeController->getAllVehicules();
                     <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
                     <li class="nav-item active"><a class="nav-link" href="voitures.php">Voitures</a></li>
                     <li class="nav-item"><a class="nav-link" href="boutiques.php">Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="trajets.php">Trajets</a></li>
                     <?php
                     require_once __DIR__ . '/../../controller/UtilisateurController.php';
                     $userController = new UtilisateurController();
                     if ($userController->estConnecte()): ?>
-                        <li class="nav-item"><a class="nav-link" href="../user/mes-boutiques.php">Mes Boutiques</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/mes-vehicules.php">Mes Véhicules</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../user/mes-trajets.php">Mes Trajets</a></li>
                         <li class="nav-item"><a class="nav-link" href="../user/profil.php">Mon Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                     <?php else: ?>

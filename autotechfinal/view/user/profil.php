@@ -130,7 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
             color: var(--text-secondary) !important;
             font-weight: 500;
             transition: all 0.3s ease;
-            padding: 0.5rem 1rem !important;
+            padding: 0.35rem 0.75rem !important;
+            font-size: 0.9rem;
             border-radius: 6px;
         }
 
@@ -419,8 +420,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
                     <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mes-boutiques.php">Mes Boutiques</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../public/trajets.php">Trajets</a></li>
                     <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mes-trajets.php">Mes Trajets</a></li>
                     <li class="nav-item active"><a class="nav-link" href="profil.php">Mon Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                 </ul>

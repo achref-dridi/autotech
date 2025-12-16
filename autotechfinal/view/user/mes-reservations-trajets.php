@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../controller/TrajetController.php';
 require_once __DIR__ . '/../../controller/UtilisateurController.php';
-require_once __DIR__ . '/../../controller/ReservationController.php';
-require_once __DIR__ . '/../../controller/VehiculeController.php';
 
 $userController = new UtilisateurController();
 
@@ -11,19 +10,17 @@ if (!$userController->estConnecte()) {
     exit();
 }
 
-$reservationController = new ReservationController();
-$vehiculeController = new VehiculeController();
-$mesReservations = $reservationController->getReservationsByUser($_SESSION['user_id']);
+$trajetController = new TrajetController();
 
-// Gestion annulation
+// Handle cancellation
 if (isset($_GET['annuler']) && is_numeric($_GET['annuler'])) {
-    $id = (int)$_GET['annuler'];
-    $result = $reservationController->cancelReservation($id, $_SESSION['user_id']);
-    if ($result['success']) {
-        header('Location: mes-reservations.php?success=annulee');
-        exit();
-    }
+    $resId = (int)$_GET['annuler'];
+    $trajetController->cancelReservation($resId, $_SESSION['user_id']);
+    header('Location: mes-reservations-trajets.php?success=annulee');
+    exit();
 }
+
+$mesReservations = $trajetController->getReservationsTrajet($_SESSION['user_id']);
 
 $message = '';
 if (isset($_GET['success'])) {
@@ -39,7 +36,7 @@ if (isset($_GET['success'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Réservations - AutoTech</title>
+    <title>Mes Réservations de Trajets - AutoTech</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -48,7 +45,6 @@ if (isset($_GET['success'])) {
             --primary-color: #2563eb;
             --primary-dark: #1e40af;
             --primary-light: #3b82f6;
-            --secondary-color: #10b981;
             --dark-bg: #0f172a;
             --card-bg: #1e293b;
             --text-primary: #f1f5f9;
@@ -73,13 +69,12 @@ if (isset($_GET['success'])) {
         .navbar {
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(10px);
-            padding: 1rem 0;
+            padding: 0.75rem 0;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
         .navbar-brand img {
-            height: 45px;
-            filter: brightness(1.1);
+            height: 40px;
         }
 
         .nav-link {
@@ -87,8 +82,8 @@ if (isset($_GET['success'])) {
             font-weight: 500;
             transition: all 0.3s ease;
             padding: 0.35rem 0.75rem !important;
-            font-size: 0.9rem;
             border-radius: 6px;
+            font-size: 0.9rem;
         }
 
         .nav-link:hover, .nav-item.active .nav-link {
@@ -99,7 +94,7 @@ if (isset($_GET['success'])) {
         .hero-section {
             background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(30, 41, 59, 0.8)),
                         linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            padding: 6rem 0 4rem;
+            padding: 5rem 0 3rem;
             text-align: center;
         }
 
@@ -115,41 +110,38 @@ if (isset($_GET['success'])) {
             padding: 4rem 0;
         }
 
+        .alert-success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
         .reservation-card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 2rem;
+            padding: 1.5rem;
             border: 1px solid var(--border-color);
             margin-bottom: 2rem;
-            transition: all 0.3s ease;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .reservation-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.2);
         }
 
         .reservation-header {
             display: flex;
             justify-content: space-between;
             align-items: start;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .vehicle-info h3 {
+        .route-info h3 {
             color: var(--text-primary);
             margin: 0 0 0.5rem 0;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
-        }
-
-        .vehicle-info p {
-            color: var(--text-muted);
-            margin: 0;
-            font-size: 0.9rem;
         }
 
         .status-badge {
@@ -179,8 +171,8 @@ if (isset($_GET['success'])) {
 
         .reservation-details {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
             margin: 1.5rem 0;
             padding: 1.5rem 0;
             border-top: 1px solid var(--border-color);
@@ -194,8 +186,7 @@ if (isset($_GET['success'])) {
 
         .detail-label {
             color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 0.5rem;
@@ -207,22 +198,37 @@ if (isset($_GET['success'])) {
             font-weight: 600;
         }
 
-        .price-highlight {
-            color: var(--primary-light);
-            font-size: 1.3rem;
+        .conducteur-info {
+            background: rgba(37, 99, 235, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .conducteur-info p {
+            margin: 0.3rem 0;
+            font-size: 0.9rem;
+        }
+
+        .conducteur-name {
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
         .action-buttons {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            margin-top: 1rem;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border: none;
             border-radius: 8px;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
@@ -234,12 +240,10 @@ if (isset($_GET['success'])) {
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             color: white;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
             color: white;
             text-decoration: none;
         }
@@ -247,12 +251,12 @@ if (isset($_GET['success'])) {
         .btn-danger {
             background: rgba(239, 68, 68, 0.2);
             color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            text-decoration: none;
         }
 
         .btn-danger:hover {
             background: rgba(239, 68, 68, 0.3);
-            color: #ef4444;
             text-decoration: none;
         }
 
@@ -277,64 +281,11 @@ if (isset($_GET['success'])) {
             margin-bottom: 2rem;
         }
 
-        .alert-success {
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            color: #10b981;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-        }
-
         footer {
             background: var(--dark-bg);
             padding: 3rem 0 1rem;
             margin-top: 4rem;
             border-top: 1px solid var(--border-color);
-        }
-
-        .footer-heading {
-            color: var(--text-primary);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        footer p, footer a {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        footer a:hover {
-            color: var(--primary-light);
-        }
-
-        footer ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        footer ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .social-icons a {
-            display: inline-flex;
-            width: 40px;
-            height: 40px;
-            background: var(--card-bg);
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            margin-right: 0.5rem;
-            transition: all 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .social-icons a:hover {
-            background: var(--primary-color);
-            transform: translateY(-3px);
-            color: white;
         }
 
         @media (max-width: 768px) {
@@ -361,7 +312,7 @@ if (isset($_GET['success'])) {
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="../public/index.php">
-                <img src="../../images/off_logo.png" alt="logo.png" id="img_logo">
+                <img src="../../images/off_logo.png" alt="logo" id="img_logo">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -370,18 +321,10 @@ if (isset($_GET['success'])) {
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link" href="../public/index.php">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../public/voitures.php">Voitures</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../public/boutiques.php">Boutiques</a></li>
                     <li class="nav-item"><a class="nav-link" href="../public/trajets.php">Trajets</a></li>
-                    <?php if ($userController->estConnecte()): ?>
-                        <li class="nav-item"><a class="nav-link" href="mes-vehicules.php">Mes Véhicules</a></li>
-                        <li class="nav-item"><a class="nav-link" href="mes-trajets.php">Mes Trajets</a></li>
-                        <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
-                    <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="../auth/login.php">Connexion</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../auth/signup.php">Inscription</a></li>
-                    <?php endif; ?>
+                    <li class="nav-item active"><a class="nav-link" href="mes-reservations-trajets.php">Mes Rés. Trajets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profil.php">Profil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Déconnexion</a></li>
                 </ul>
             </div>
         </div>
@@ -389,7 +332,7 @@ if (isset($_GET['success'])) {
 
     <section class="hero-section">
         <div class="container">
-            <h1>Mes Réservations</h1>
+            <h1><i class="fas fa-ticket-alt mr-2"></i> Mes Réservations de Trajets</h1>
         </div>
     </section>
 
@@ -404,55 +347,70 @@ if (isset($_GET['success'])) {
             <?php if (empty($mesReservations)): ?>
                 <div class="empty-state">
                     <div class="empty-icon">
-                        <i class="fas fa-calendar-times"></i>
+                        <i class="fas fa-map-location-dot"></i>
                     </div>
                     <h3>Aucune réservation</h3>
-                    <p>Vous n'avez pas encore de réservations. Découvrez nos véhicules disponibles.</p>
-                    <a href="../public/voitures.php" class="btn btn-primary">
-                        <i class="fas fa-car mr-2"></i> Découvrir les véhicules
+                    <p>Vous n'avez pas encore réservé de trajet. Découvrez les trajets disponibles.</p>
+                    <a href="../public/trajets.php" class="btn btn-primary">
+                        <i class="fas fa-road mr-2"></i> Découvrir les trajets
                     </a>
                 </div>
             <?php else: ?>
                 <div class="row">
-                    <?php foreach ($mesReservations as $reservation): ?>
+                    <?php foreach ($mesReservations as $res): ?>
                         <div class="col-md-6 col-lg-4">
                             <div class="reservation-card">
                                 <div class="reservation-header">
-                                    <div class="vehicle-info">
-                                        <h3><?= htmlspecialchars($reservation['marque'] . ' ' . $reservation['modele']) ?></h3>
-                                        <p><?= htmlspecialchars($reservation['annee'] ?? 'N/A') ?></p>
+                                    <div class="route-info">
+                                        <h3>
+                                            <i class="fas fa-map-pin" style="color: var(--primary-light); margin-right: 0.5rem;"></i>
+                                            <?= htmlspecialchars($res['lieu_depart']) ?> → <?= htmlspecialchars($res['lieu_arrivee']) ?>
+                                        </h3>
                                     </div>
-                                    <span class="status-badge <?= strtolower(str_replace(' ', '-', $reservation['statut'])) ?>">
-                                        <?= htmlspecialchars($reservation['statut']) ?>
+                                    <span class="status-badge <?= strtolower(str_replace(' ', '-', $res['statut'])) ?>">
+                                        <?= htmlspecialchars($res['statut']) ?>
                                     </span>
                                 </div>
 
                                 <div class="reservation-details">
                                     <div class="detail-item">
-                                        <div class="detail-label">Début</div>
-                                        <div class="detail-value"><?= date('d/m/Y', strtotime($reservation['date_debut'])) ?></div>
+                                        <div class="detail-label">Départ</div>
+                                        <div class="detail-value"><?= date('d/m H:i', strtotime($res['date_depart'])) ?></div>
                                     </div>
                                     <div class="detail-item">
-                                        <div class="detail-label">Fin</div>
-                                        <div class="detail-value"><?= date('d/m/Y', strtotime($reservation['date_fin'])) ?></div>
+                                        <div class="detail-label">Durée</div>
+                                        <div class="detail-value"><?= $res['duree_minutes'] ?> min</div>
                                     </div>
                                     <div class="detail-item">
-                                        <div class="detail-label">Prix Total</div>
-                                        <div class="detail-value price-highlight"><?= number_format($reservation['prix_total'], 2) ?> DT</div>
+                                        <div class="detail-label">Places</div>
+                                        <div class="detail-value"><?= $res['nombre_places'] ?></div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Prix</div>
+                                        <div class="detail-value" style="color: var(--primary-light);"><?= number_format($res['prix'], 2) ?> DT</div>
                                     </div>
                                 </div>
 
+                                <div class="conducteur-info">
+                                    <p class="conducteur-name">
+                                        <i class="fas fa-user-circle mr-1"></i>
+                                        <?= htmlspecialchars($res['prenom'] . ' ' . $res['nom']) ?>
+                                    </p>
+                                    <p><i class="fas fa-phone mr-1"></i> <?= htmlspecialchars($res['telephone'] ?? 'N/A') ?></p>
+                                    <p><i class="fas fa-envelope mr-1"></i> <?= htmlspecialchars($res['email']) ?></p>
+                                </div>
+
                                 <div class="action-buttons">
-                                    <a href="../public/voiture-details.php?id=<?= $reservation['id_vehicule'] ?>" class="btn btn-primary">
-                                        <i class="fas fa-eye"></i> Voir détails
-                                    </a>
-                                    <?php if ($reservation['statut'] !== 'annulée'): ?>
-                                        <a href="mes-reservations.php?annuler=<?= $reservation['id_reservation'] ?>" 
+                                    <?php if ($res['statut'] !== 'annulee'): ?>
+                                        <a href="?annuler=<?= $res['id_reservation_trajet'] ?>" 
                                            class="btn btn-danger"
-                                           onclick="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');">
+                                           onclick="return confirm('Êtes-vous sûr de vouloir annuler?');">
                                             <i class="fas fa-times"></i> Annuler
                                         </a>
                                     <?php endif; ?>
+                                    <a href="../public/trajets.php" class="btn btn-primary">
+                                        <i class="fas fa-arrow-left"></i> Découvrir plus
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -464,45 +422,8 @@ if (isset($_GET['success'])) {
 
     <footer>
         <div class="container">
-            <div class="row mb-4">
-                <div class="col-md-4 mb-4">
-                    <h3 class="footer-heading"><img src="../../images/off_logo.png" alt="logo.png" style="height: 40px;"></h3>
-                    <p>Autotech est conçu pour centraliser et simplifier l'expérience automobile dans un environnement digital de pointe, répondant à la demande croissante d'efficacité et de transparence.</p>
-                    <div class="social-icons mt-3">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-2 mb-4">
-                    <h4 class="footer-heading">Informations</h4>
-                    <ul>
-                        <li><a href="#">À propos</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Termes et Conditions</a></li>
-                        <li><a href="#">Garantie du Meilleur Prix</a></li>
-                        <li><a href="#">Politique de Confidentialité</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h4 class="footer-heading">Support Client</h4>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Option de Paiement</a></li>
-                        <li><a href="#">Conseils de Réservation</a></li>
-                        <li><a href="#">Comment ça marche</a></li>
-                        <li><a href="#">Nous Contacter</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h4 class="footer-heading">Vous avez des Questions?</h4>
-                    <p><i class="fas fa-map-marker-alt mr-2"></i> Esprit, Ariana sogra, Ariana, Tunisie</p>
-                    <p><i class="fas fa-phone mr-2"></i> <a href="tel:+21633856909">+216 33 856 909</a></p>
-                    <p><i class="fas fa-envelope mr-2"></i> <a href="mailto:AutoTech@gmail.tn">AutoTech@gmail.tn</a></p>
-                </div>
-            </div>
             <div class="text-center pt-3" style="border-top: 1px solid var(--border-color);">
-                <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> Tous droits réservés | AutoTech</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Copyright &copy; <script>document.write(new Date().getFullYear());</script> AutoTech</p>
             </div>
         </div>
     </footer>
