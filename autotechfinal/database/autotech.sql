@@ -19,7 +19,44 @@ CREATE TABLE utilisateur (
     reset_token VARCHAR(255),
     reset_expires DATETIME
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--admin account
+INSERT INTO utilisateur (
+    id_utilisateur,
+    nom,
+    prenom,
+    email,
+    telephone,
+    mot_de_passe,
+    adresse,
+    ville,
+    code_postal,
+    photo_profil,
+    date_creation,
+    date_modification,
+    statut,
+    role,
+    reset_token,
+    reset_expires
+) VALUES (
+    4,
+    '',
+    'Admin',
+    'admin@autotech.tn',
+    '+21653666666',
+    '$2y$10$okCZjwlueLw6wRDXFOZHbOvkoLDhKxq9fJWyOOlDlTPTNHDqgz4cK',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    '2025-12-16 19:43:21',
+    '2025-12-16 19:43:21',
+    'actif',
+    'utilisateur',
+    NULL,
+    NULL
+);
 
+-- password is 'Azerty1234*'
 CREATE TABLE vehicule (
     id_vehicule INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur INT UNSIGNED NOT NULL,
