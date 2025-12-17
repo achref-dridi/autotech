@@ -1,6 +1,9 @@
 CREATE DATABASE IF NOT EXISTS autotech_db;
 USE autotech_db;
 
+-- =========================
+-- 1. UTILISATEUR
+-- =========================
 CREATE TABLE utilisateur (
     id_utilisateur INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -19,44 +22,55 @@ CREATE TABLE utilisateur (
     reset_token VARCHAR(255),
     reset_expires DATETIME
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
---admin account
+
+-- admin account
 INSERT INTO utilisateur (
-    id_utilisateur,
-    nom,
-    prenom,
-    email,
-    telephone,
-    mot_de_passe,
-    adresse,
-    ville,
-    code_postal,
-    photo_profil,
-    date_creation,
-    date_modification,
-    statut,
-    role,
-    reset_token,
-    reset_expires
+    id_utilisateur, nom, prenom, email, telephone, mot_de_passe,
+    adresse, ville, code_postal, photo_profil,
+    date_creation, date_modification, statut, role, reset_token, reset_expires
 ) VALUES (
-    4,
-    '',
-    'Admin',
-    'admin@autotech.tn',
-    '+21653666666',
+    4, '', 'Admin', 'admin@autotech.tn', '+21653666666',
     '$2y$10$okCZjwlueLw6wRDXFOZHbOvkoLDhKxq9fJWyOOlDlTPTNHDqgz4cK',
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    '2025-12-16 19:43:21',
-    '2025-12-16 19:43:21',
-    'actif',
-    'utilisateur',
-    NULL,
-    NULL
+    NULL, NULL, NULL, NULL,
+    '2025-12-16 19:43:21', '2025-12-16 19:43:21',
+    'actif', 'utilisateur', NULL, NULL
 );
 
--- password is 'Azerty1234*'
+-- password is Azerty1234*
+
+-- =========================
+-- 2. TECHNICIEN
+-- =========================
+CREATE TABLE technicien (
+    id_technicien INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    specialite VARCHAR(255) NOT NULL,
+    telephone VARCHAR(20),
+    email VARCHAR(255),
+    disponibilite VARCHAR(50) DEFAULT 'actif',
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- =========================
+-- 3. BOUTIQUE
+-- =========================
+CREATE TABLE boutique (
+    id_boutique INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nom_boutique VARCHAR(150) NOT NULL,
+    adresse VARCHAR(255) NOT NULL,
+    telephone VARCHAR(20) NOT NULL,
+    logo VARCHAR(255),
+    id_utilisateur INT UNSIGNED NOT NULL,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    statut ENUM('actif', 'inactif') DEFAULT 'actif',
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
+    UNIQUE KEY unique_boutique_user (nom_boutique, id_utilisateur)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =========================
+-- 4. VEHICULE
+-- =========================
 CREATE TABLE vehicule (
     id_vehicule INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur INT UNSIGNED NOT NULL,
@@ -78,92 +92,10 @@ CREATE TABLE vehicule (
     FOREIGN KEY (id_boutique) REFERENCES boutique(id_boutique) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE boutique (
-    id_boutique INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nom_boutique VARCHAR(150) NOT NULL,
-    adresse VARCHAR(255) NOT NULL,
-    telephone VARCHAR(20) NOT NULL,
-    logo VARCHAR(255),
-    id_utilisateur INT UNSIGNED NOT NULL,
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    statut ENUM('actif', 'inactif') DEFAULT 'actif',
-    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
-    UNIQUE KEY unique_boutique_user (nom_boutique, id_utilisateur)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-CREATE TABLE IF NOT EXISTS technicien (
-    id_technicien INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(255) NOT NULL,
-    specialite VARCHAR(255) NOT NULL,
-    telephone VARCHAR(20),
-    email VARCHAR(255),
-    disponibilite VARCHAR(50) DEFAULT 'actif',
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS rendez_vous (
-    id_rdv INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
-    id_technicien INT UNSIGNED NOT NULL,
-    id_utilisateur INT UNSIGNED NOT NULL,
-
-    date_rdv DATETIME NOT NULL,
-    type_intervention VARCHAR(255) NOT NULL,
-    commentaire TEXT,
-    statut VARCHAR(50) DEFAULT 'en attente',
-    google_event_id VARCHAR(255),
-
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_rdv_technicien
-        FOREIGN KEY (id_technicien)
-        REFERENCES technicien(id_technicien)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_rdv_utilisateur
-        FOREIGN KEY (id_utilisateur)
-        REFERENCES utilisateur(id_utilisateur)
-        ON DELETE CASCADE,
-
-    INDEX idx_technicien (id_technicien),
-    INDEX idx_utilisateur (id_utilisateur),
-    INDEX idx_date (date_rdv),
-
-    UNIQUE KEY unique_google_event (google_event_id)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS reservation (
-    id_reservation INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_vehicule INT UNSIGNED NOT NULL,
-    id_utilisateur INT UNSIGNED NOT NULL,
-    date_debut DATETIME NOT NULL,
-    date_fin DATETIME NOT NULL,
-    statut VARCHAR(50) DEFAULT 'en attente',
-    prix_total DECIMAL(10,2),
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-    CONSTRAINT fk_reservation_vehicule
-        FOREIGN KEY (id_vehicule)
-        REFERENCES vehicule(id_vehicule)
-        ON DELETE CASCADE,
-    
-    CONSTRAINT fk_reservation_utilisateur
-        FOREIGN KEY (id_utilisateur)
-        REFERENCES utilisateur(id_utilisateur)
-        ON DELETE CASCADE,
-    
-    INDEX idx_vehicule (id_vehicule),
-    INDEX idx_utilisateur (id_utilisateur),
-    INDEX idx_dates (date_debut, date_fin),
-    INDEX idx_statut (statut)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS trajet (
+-- =========================
+-- 5. TRAJET
+-- =========================
+CREATE TABLE trajet (
     id_trajet INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur INT UNSIGNED NOT NULL,
     lieu_depart VARCHAR(255) NOT NULL,
@@ -176,19 +108,17 @@ CREATE TABLE IF NOT EXISTS trajet (
     statut ENUM('disponible', 'complet', 'termine', 'annule') DEFAULT 'disponible',
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-    CONSTRAINT fk_trajet_utilisateur
-        FOREIGN KEY (id_utilisateur)
-        REFERENCES utilisateur(id_utilisateur)
-        ON DELETE CASCADE,
-    
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
     INDEX idx_utilisateur (id_utilisateur),
     INDEX idx_date_depart (date_depart),
     INDEX idx_statut (statut),
     INDEX idx_lieux (lieu_depart, lieu_arrivee)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS proposition (
+-- =========================
+-- 6. PROPOSITION
+-- =========================
+CREATE TABLE proposition (
     id_proposition INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_trajet INT UNSIGNED NOT NULL,
     id_conducteur INT UNSIGNED NOT NULL,
@@ -196,31 +126,60 @@ CREATE TABLE IF NOT EXISTS proposition (
     message TEXT,
     date_proposition TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     statut ENUM('en_attente', 'acceptee', 'refusee') DEFAULT 'en_attente',
-    
-    CONSTRAINT fk_proposition_trajet
-        FOREIGN KEY (id_trajet)
-        REFERENCES trajet(id_trajet)
-        ON DELETE CASCADE,
-    
-    CONSTRAINT fk_proposition_conducteur
-        FOREIGN KEY (id_conducteur)
-        REFERENCES utilisateur(id_utilisateur)
-        ON DELETE CASCADE,
-    
+    FOREIGN KEY (id_trajet) REFERENCES trajet(id_trajet) ON DELETE CASCADE,
+    FOREIGN KEY (id_conducteur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
     INDEX idx_trajet (id_trajet),
     INDEX idx_conducteur (id_conducteur),
     INDEX idx_statut (statut)
 ) ENGINE=InnoDB;
 
+-- =========================
+-- 7. RENDEZ-VOUS
+-- =========================
+CREATE TABLE rendez_vous (
+    id_rdv INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_technicien INT UNSIGNED NOT NULL,
+    id_utilisateur INT UNSIGNED NOT NULL,
+    date_rdv DATETIME NOT NULL,
+    type_intervention VARCHAR(255) NOT NULL,
+    commentaire TEXT,
+    statut VARCHAR(50) DEFAULT 'en attente',
+    google_event_id VARCHAR(255),
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_technicien) REFERENCES technicien(id_technicien) ON DELETE CASCADE,
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
+    UNIQUE KEY unique_google_event (google_event_id),
+    INDEX idx_technicien (id_technicien),
+    INDEX idx_utilisateur (id_utilisateur),
+    INDEX idx_date (date_rdv)
+) ENGINE=InnoDB;
 
-INSERT INTO technicien (nom, specialite, telephone, email, disponibilite) VALUES
-('Moemen Toukebri', 'Diagnostic moteur', '98765432', 'ali.tech@autotech.tn', 'actif'),
-('Khaled Ben Salah', 'Réparation freins', '98765433', 'khaled.tech@autotech.tn', 'actif'),
-('Fatima Ezzahra', 'Électricité automobile', '98765434', 'fatima.tech@autotech.tn', 'actif'),
-('Nabil Jebali', 'Changement pneus', '98765435', 'nabil.tech@autotech.tn', 'actif'),
-('Amel Kareem', 'Révision générale', '98765436', 'amel.tech@autotech.tn', 'actif');
+-- =========================
+-- 8. RESERVATION
+-- =========================
+CREATE TABLE reservation (
+    id_reservation INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_vehicule INT UNSIGNED NOT NULL,
+    id_utilisateur INT UNSIGNED NOT NULL,
+    date_debut DATETIME NOT NULL,
+    date_fin DATETIME NOT NULL,
+    statut VARCHAR(50) DEFAULT 'en attente',
+    prix_total DECIMAL(10,2),
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_vehicule) REFERENCES vehicule(id_vehicule) ON DELETE CASCADE,
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
+    INDEX idx_vehicule (id_vehicule),
+    INDEX idx_utilisateur (id_utilisateur),
+    INDEX idx_dates (date_debut, date_fin),
+    INDEX idx_statut (statut)
+) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS signalement (
+-- =========================
+-- 9. SIGNALEMENT
+-- =========================
+CREATE TABLE signalement (
     id_signalement INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur INT UNSIGNED NOT NULL,
     type_objet ENUM('vehicule', 'boutique', 'autre') NOT NULL,
@@ -232,13 +191,17 @@ CREATE TABLE IF NOT EXISTS signalement (
     piece_jointe_admin VARCHAR(255),
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_mise_a_jour TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_signalement_utilisateur
-        FOREIGN KEY (id_utilisateur)
-        REFERENCES utilisateur(id_utilisateur)
-        ON DELETE CASCADE,
-    
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON DELETE CASCADE,
     INDEX idx_utilisateur (id_utilisateur),
     INDEX idx_statut (statut)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB;
 
+-- =========================
+-- 10. TECHNICIENS DATA
+-- =========================
+INSERT INTO technicien (nom, specialite, telephone, email, disponibilite) VALUES
+('Moemen Toukebri', 'Diagnostic moteur', '98765432', 'ali.tech@autotech.tn', 'actif'),
+('Khaled Ben Salah', 'Réparation freins', '98765433', 'khaled.tech@autotech.tn', 'actif'),
+('Fatima Ezzahra', 'Électricité automobile', '98765434', 'fatima.tech@autotech.tn', 'actif'),
+('Nabil Jebali', 'Changement pneus', '98765435', 'nabil.tech@autotech.tn', 'actif'),
+('Amel Kareem', 'Révision générale', '98765436', 'amel.tech@autotech.tn', 'actif');

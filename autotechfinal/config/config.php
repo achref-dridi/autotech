@@ -39,7 +39,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 date_default_timezone_set('Africa/Tunis');
 
-define('BASE_URL', '/AutoTech_Integrated/');
+// Detect base path dynamically
+$root = str_replace('\\', '/', dirname(__DIR__));
+$docRoot = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+$base = str_replace($docRoot, '', $root);
+define('BASE_URL', $base . '/');
+
 define('UPLOAD_DIR', __DIR__ . '/../uploads/');
 define('UPLOAD_URL', BASE_URL . 'uploads/');
 ?>
