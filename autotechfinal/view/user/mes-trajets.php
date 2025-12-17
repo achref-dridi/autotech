@@ -12,7 +12,7 @@ if (!$userController->estConnecte()) {
 
 $trajetController = new TrajetController();
 
-// Handle deletion
+// Handle delete
 if (isset($_GET['supprimer']) && is_numeric($_GET['supprimer'])) {
     $id = (int)$_GET['supprimer'];
     if ($trajetController->estProprietaire($id, $_SESSION['user_id'])) {
@@ -22,37 +22,16 @@ if (isset($_GET['supprimer']) && is_numeric($_GET['supprimer'])) {
     }
 }
 
-// Handle reservation approval/rejection
-if (isset($_GET['confirmer']) && is_numeric($_GET['confirmer'])) {
-    $resId = (int)$_GET['confirmer'];
-    $trajetId = (int)$_GET['trajet_id'];
-    $trajetController->confirmReservation($resId, $trajetId);
-    header('Location: mes-trajets.php?success=confirmee');
-    exit();
-}
-
-if (isset($_GET['rejeter']) && is_numeric($_GET['rejeter'])) {
-    $resId = (int)$_GET['rejeter'];
-    $trajetId = (int)$_GET['trajet_id'];
-    $trajetController->rejectReservation($resId, $trajetId);
-    header('Location: mes-trajets.php?success=rejetee');
-    exit();
-}
-
 $mesTrajets = $trajetController->getTrajetsByUtilisateur($_SESSION['user_id']);
 
 $message = '';
 if (isset($_GET['success'])) {
     if ($_GET['success'] === 'cree') {
-        $message = 'Trajet créé avec succès.';
+        $message = 'Demande de trajet créée avec succès.';
     } elseif ($_GET['success'] === 'supprime') {
-        $message = 'Trajet supprimé avec succès.';
+        $message = 'Demande supprimée avec succès.';
     } elseif ($_GET['success'] === 'modifie') {
-        $message = 'Trajet modifié avec succès.';
-    } elseif ($_GET['success'] === 'confirmee') {
-        $message = 'Réservation confirmée.';
-    } elseif ($_GET['success'] === 'rejetee') {
-        $message = 'Réservation rejetée.';
+        $message = 'Demande modifiée avec succès.';
     }
 }
 ?>
@@ -61,7 +40,7 @@ if (isset($_GET['success'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Trajets - AutoTech</title>
+    <title>Mes Demandes - AutoTech</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -434,7 +413,7 @@ if (isset($_GET['success'])) {
 
     <section class="hero-section">
         <div class="container">
-            <h1><i class="fas fa-road mr-2"></i> Mes Trajets</h1>
+            <h1><i class="fas fa-road mr-2"></i> Mes Demandes de Trajet</h1>
         </div>
     </section>
 
@@ -448,7 +427,7 @@ if (isset($_GET['success'])) {
 
             <div class="action-buttons-header">
                 <a href="ajouter-trajet.php" class="btn btn-primary">
-                    <i class="fas fa-plus-circle"></i> Nouveau trajet
+                    <i class="fas fa-plus-circle"></i> Nouvelle demande
                 </a>
             </div>
 
@@ -460,7 +439,7 @@ if (isset($_GET['success'])) {
                     <h3>Aucun trajet</h3>
                     <p>Vous n'avez pas encore créé de trajet. Commencez à partager votre route maintenant!</p>
                     <a href="ajouter-trajet.php" class="btn btn-primary">
-                        <i class="fas fa-plus-circle mr-2"></i> Créer un trajet
+                        <i class="fas fa-plus-circle mr-2"></i> Créer une demande
                     </a>
                 </div>
             <?php else: ?>
@@ -474,8 +453,8 @@ if (isset($_GET['success'])) {
                                 </h3>
                             </div>
                             <div class="route-price" style="background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); padding: 0.8rem 1.5rem; border-radius: 10px; color: white; font-weight: 600; text-align: center;">
-                                <div style="font-size: 1.5rem;"><?= number_format($trajet['prix'], 2) ?></div>
-                                <div style="font-size: 0.8rem; opacity: 0.9;">DT</div>
+                                <div style="font-size: 1.5rem;"><?= number_format($trajet['budget'], 2) ?></div>
+                                <div style="font-size: 0.8rem; opacity: 0.9;">DT (Budget)</div>
                             </div>
                         </div>
 
@@ -489,8 +468,8 @@ if (isset($_GET['success'])) {
                                 <div class="detail-value"><?= $trajet['duree_minutes'] ?> min</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Places</div>
-                                <div class="detail-value"><?= $trajet['places_disponibles'] ?></div>
+                                <div class="detail-label">Places demandées</div>
+                                <div class="detail-value"><?= $trajet['places_demandees'] ?></div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">Statut</div>
@@ -506,47 +485,22 @@ if (isset($_GET['success'])) {
                             </p>
                         <?php endif; ?>
 
+                        <!-- Propositions Section (Optional inline count) -->
                         <?php 
-                        $reservations = $trajetController->getReservationsByTrajet($trajet['id_trajet']);
-                        if (!empty($reservations)): 
+                        require_once __DIR__ . '/../../controller/PropositionController.php';
+                        $propController = new PropositionController();
+                        $propositions = $propController->getPropositionsByTrajet($trajet['id_trajet']);
+                        if (!empty($propositions)): 
                         ?>
-                            <div class="reservations-section">
-                                <div class="reservations-title">
-                                    <i class="fas fa-users mr-1"></i> Réservations (<?= count($reservations) ?>)
-                                </div>
-                                <?php foreach ($reservations as $res): ?>
-                                    <div class="reservation-item">
-                                        <div class="reservation-name">
-                                            <i class="fas fa-user-circle mr-1" style="color: var(--primary-light);"></i>
-                                            <?= htmlspecialchars($res['prenom'] . ' ' . $res['nom']) ?>
-                                        </div>
-                                        <div>
-                                            <span class="reservation-status status-<?= strtolower(str_replace(' ', '-', $res['statut'])) ?>">
-                                                <?= htmlspecialchars(ucfirst($res['statut'])) ?>
-                                            </span>
-                                        </div>
-                                        <div style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">
-                                            <i class="fas fa-envelope mr-1"></i> <?= htmlspecialchars($res['email']) ?>
-                                            <?php if (!empty($res['telephone'])): ?>
-                                                | <i class="fas fa-phone mr-1"></i> <?= htmlspecialchars($res['telephone']) ?>
-                                            <?php endif; ?>
-                                        </div>
-                                        <?php if ($res['statut'] === 'en attente'): ?>
-                                            <div class="res-actions">
-                                                <a href="?confirmer=<?= $res['id_reservation_trajet'] ?>&trajet_id=<?= $trajet['id_trajet'] ?>" class="btn btn-confirm">
-                                                    <i class="fas fa-check"></i> Confirmer
-                                                </a>
-                                                <a href="?rejeter=<?= $res['id_reservation_trajet'] ?>&trajet_id=<?= $trajet['id_trajet'] ?>" class="btn btn-reject">
-                                                    <i class="fas fa-times"></i> Rejeter
-                                                </a>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endforeach; ?>
+                            <div class="mt-3">
+                                <span class="badge badge-info p-2"><i class="fas fa-comments"></i> <?= count($propositions) ?> proposition(s) reçue(s)</span>
                             </div>
                         <?php endif; ?>
 
                         <div class="trajet-actions">
+                            <a href="voir-propositions.php?id=<?= $trajet['id_trajet'] ?>" class="btn btn-primary">
+                                <i class="fas fa-list-alt"></i> Voir les propositions
+                            </a>
                             <a href="modifier-trajet.php?id=<?= $trajet['id_trajet'] ?>" class="btn btn-edit">
                                 <i class="fas fa-edit"></i> Modifier
                             </a>

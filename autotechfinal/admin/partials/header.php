@@ -135,12 +135,7 @@ $pageTitle = $pageTitle ?? 'Tableau de Bord - Administration AutoTech';
                   <p>Trajets</p>
                 </a>
               </li>
-              <li class="nav-item <?= basename($_SERVER['PHP_SELF']) == 'reservations-trajets.php' ? 'active' : '' ?>">
-                <a href="reservations-trajets.php">
-                  <i class="fas fa-ticket-alt"></i>
-                  <p>Réservations Trajets</p>
-                </a>
-              </li>
+              <!-- Link removed -->
               <li class="nav-item <?= basename($_SERVER['PHP_SELF']) == 'signalements.php' ? 'active' : '' ?>">
                 <a href="signalements.php">
                   <i class="fas fa-exclamation-triangle"></i>

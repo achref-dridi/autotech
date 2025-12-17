@@ -13,7 +13,7 @@ $trajets = $trajetController->getAllTrajets();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trajets Disponibles - AutoTech</title>
+    <title>Demandes de Trajet - AutoTech</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -351,12 +351,7 @@ $trajets = $trajetController->getAllTrajets();
     <section class="hero-section">
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1><i class="fas fa-road mr-2"></i> Trajets Disponibles</h1>
-                <?php if ($userController->estConnecte()): ?>
-                    <a href="../user/mes-reservations-trajets.php" class="btn btn-secondary" style="font-size: 0.9rem;">
-                        <i class="fas fa-history mr-2"></i> Mes Réservations
-                    </a>
-                <?php endif; ?>
+                <h1><i class="fas fa-road mr-2"></i> Demandes de Trajet</h1>
             </div>
         </div>
     </section>
@@ -368,11 +363,11 @@ $trajets = $trajetController->getAllTrajets();
                     <div class="empty-icon">
                         <i class="fas fa-map-location-dot"></i>
                     </div>
-                    <h3>Aucun trajet disponible</h3>
-                    <p>Il n'y a pas de trajets disponibles pour le moment.</p>
+                    <h3>Aucune demande disponible</h3>
+                    <p>Il n'y a pas de demandes de trajet pour le moment.</p>
                     <?php if ($userController->estConnecte()): ?>
                         <a href="../user/ajouter-trajet.php" class="btn btn-primary">
-                            <i class="fas fa-plus mr-2"></i> Proposer un trajet
+                            <i class="fas fa-plus mr-2"></i> Demander un trajet
                         </a>
                     <?php else: ?>
                         <a href="../auth/login.php" class="btn btn-primary">
@@ -398,15 +393,15 @@ $trajets = $trajetController->getAllTrajets();
                                         </p>
                                     </div>
                                     <div class="trajet-prix">
-                                        <div class="prix-value"><?= number_format($trajet['prix'], 2) ?></div>
-                                        <div class="prix-label">DT</div>
+                                        <div class="prix-value"><?= number_format($trajet['budget'], 2) ?></div>
+                                        <div class="prix-label">DT (Budget)</div>
                                     </div>
                                 </div>
 
                                 <div class="conducteur-info">
                                     <p class="conducteur-name">
                                         <i class="fas fa-user-circle mr-1"></i>
-                                        <?= htmlspecialchars($trajet['prenom'] . ' ' . $trajet['nom']) ?>
+                                        Passager: <?= htmlspecialchars($trajet['prenom'] . ' ' . $trajet['nom']) ?>
                                     </p>
                                     <p><i class="fas fa-phone mr-1"></i> <?= htmlspecialchars($trajet['telephone'] ?? 'N/A') ?></p>
                                     <p><i class="fas fa-envelope mr-1"></i> <?= htmlspecialchars($trajet['email']) ?></p>
@@ -422,8 +417,8 @@ $trajets = $trajetController->getAllTrajets();
                                         <div class="detail-value"><?= $trajet['duree_minutes'] ?> min</div>
                                     </div>
                                     <div class="detail-item">
-                                        <div class="detail-label">Places</div>
-                                        <div class="detail-value"><?= $trajet['places_disponibles'] ?></div>
+                                        <div class="detail-label">Places demandées</div>
+                                        <div class="detail-value"><?= $trajet['places_demandees'] ?></div>
                                     </div>
                                 </div>
 
@@ -437,17 +432,17 @@ $trajets = $trajetController->getAllTrajets();
 
                                 <div class="action-buttons">
                                     <?php if ($userController->estConnecte() && $trajet['id_utilisateur'] != $_SESSION['user_id']): ?>
-                                        <a href="../user/prendre-trajet.php?id=<?= $trajet['id_trajet'] ?>" class="btn btn-primary">
-                                            <i class="fas fa-check-circle"></i> Réserver
+                                        <a href="../user/faire-proposition.php?id=<?= $trajet['id_trajet'] ?>" class="btn btn-primary">
+                                            <i class="fas fa-hand-holding-usd mr-2"></i> Faire une proposition
                                         </a>
                                     <?php elseif (!$userController->estConnecte()): ?>
                                         <a href="../auth/login.php" class="btn btn-primary">
                                             <i class="fas fa-sign-in-alt"></i> Se connecter
                                         </a>
                                     <?php else: ?>
-                                        <span class="btn btn-secondary" style="cursor: default;">
-                                            <i class="fas fa-lock"></i> Votre trajet
-                                        </span>
+                                        <a href="../user/voir-propositions.php?id=<?= $trajet['id_trajet'] ?>" class="btn btn-info text-white">
+                                            <i class="fas fa-list-alt mr-2"></i> Voir les propositions
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </div>

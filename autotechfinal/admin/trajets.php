@@ -23,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $lieu_arrivee = $_POST['lieu_arrivee'] ?? '';
     $date_depart = $_POST['date_depart'] ?? '';
     $duree_minutes = $_POST['duree_minutes'] ?? 0;
-    $prix = $_POST['prix'] ?? 0;
+    $budget = $_POST['budget'] ?? 0;
     $description = $_POST['description'] ?? '';
-    $places_disponibles = $_POST['places_disponibles'] ?? 1;
+    $places_demandees = $_POST['places_demandees'] ?? 1;
     $statut = $_POST['statut'] ?? 'disponible';
     
     try {
@@ -33,28 +33,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $id = $_POST['id'];
             $sql = "UPDATE trajet SET id_utilisateur = :id_utilisateur, lieu_depart = :lieu_depart,
                     lieu_arrivee = :lieu_arrivee, date_depart = :date_depart, duree_minutes = :duree_minutes,
-                    prix = :prix, description = :description, places_disponibles = :places_disponibles, statut = :statut
+                    budget = :budget, description = :description, places_demandees = :places_demandees, statut = :statut
                     WHERE id_trajet = :id";
             $stmt = $pdo->prepare($sql);
             if ($stmt->execute([
                 ':id_utilisateur' => $id_utilisateur, ':lieu_depart' => $lieu_depart,
                 ':lieu_arrivee' => $lieu_arrivee, ':date_depart' => $date_depart,
-                ':duree_minutes' => $duree_minutes, ':prix' => $prix,
-                ':description' => $description, ':places_disponibles' => $places_disponibles,
+                ':duree_minutes' => $duree_minutes, ':budget' => $budget,
+                ':description' => $description, ':places_demandees' => $places_demandees,
                 ':statut' => $statut, ':id' => $id
             ])) {
                 $message = 'Trajet mis à jour avec succès.';
                 $messageType = 'success';
             }
         } else {
-            $sql = "INSERT INTO trajet (id_utilisateur, lieu_depart, lieu_arrivee, date_depart, duree_minutes, prix, description, places_disponibles, statut)
-                    VALUES (:id_utilisateur, :lieu_depart, :lieu_arrivee, :date_depart, :duree_minutes, :prix, :description, :places_disponibles, :statut)";
+            $sql = "INSERT INTO trajet (id_utilisateur, lieu_depart, lieu_arrivee, date_depart, duree_minutes, budget, description, places_demandees, statut)
+                    VALUES (:id_utilisateur, :lieu_depart, :lieu_arrivee, :date_depart, :duree_minutes, :budget, :description, :places_demandees, :statut)";
             $stmt = $pdo->prepare($sql);
             if ($stmt->execute([
                 ':id_utilisateur' => $id_utilisateur, ':lieu_depart' => $lieu_depart,
                 ':lieu_arrivee' => $lieu_arrivee, ':date_depart' => $date_depart,
-                ':duree_minutes' => $duree_minutes, ':prix' => $prix,
-                ':description' => $description, ':places_disponibles' => $places_disponibles,
+                ':duree_minutes' => $duree_minutes, ':budget' => $budget,
+                ':description' => $description, ':places_demandees' => $places_demandees,
                 ':statut' => $statut
             ])) {
                 $message = 'Trajet ajouté avec succès.';
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
 $trajets = $pdo->query("
     SELECT t.*, u.nom as user_nom, u.prenom as user_prenom,
-           (SELECT COUNT(*) FROM reservation_trajet WHERE id_trajet = t.id_trajet) as nb_reservations
+           (SELECT COUNT(*) FROM proposition WHERE id_trajet = t.id_trajet) as nb_propositions
     FROM trajet t
     LEFT JOIN utilisateur u ON t.id_utilisateur = u.id_utilisateur
     ORDER BY t.date_depart DESC
@@ -93,7 +93,7 @@ $stats = [
         <p class="text-muted mb-0">Gérer tous les trajets</p>
       </div>
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-        <i class="fas fa-plus me-2"></i>Ajouter un Trajet
+        <i class="fas fa-plus me-2"></i>Ajouter une Demande
       </button>
     </div>
   </div>
@@ -145,9 +145,9 @@ $stats = [
             <th>Arrivée</th>
             <th>Date Départ</th>
             <th>Durée</th>
-            <th>Prix</th>
-            <th>Places</th>
-            <th>Réservations</th>
+            <th>Budget</th>
+            <th>Places Dem.</th>
+            <th>Propositions</th>
             <th>Statut</th>
             <th>Actions</th>
           </tr>
@@ -161,9 +161,13 @@ $stats = [
             <td><?= htmlspecialchars($trajet['lieu_arrivee']) ?></td>
             <td><?= date('d/m/Y H:i', strtotime($trajet['date_depart'])) ?></td>
             <td><?= $trajet['duree_minutes'] ?> min</td>
-            <td><?= number_format($trajet['prix'], 2) ?> TND</td>
-            <td><?= $trajet['places_disponibles'] ?></td>
-            <td><span class="badge bg-info"><?= $trajet['nb_reservations'] ?></span></td>
+            <td><?= number_format($trajet['budget'], 2) ?> TND</td>
+            <td><?= $trajet['places_demandees'] ?></td>
+            <td>
+                <a href="propositions.php?id_trajet=<?= $trajet['id_trajet'] ?>" class="badge bg-info text-decoration-none">
+                    <?= $trajet['nb_propositions'] ?> <i class="fas fa-eye ms-1"></i>
+                </a>
+            </td>
             <td>
               <span class="badge bg-<?= $trajet['statut'] === 'disponible' ? 'success' : ($trajet['statut'] === 'complet' ? 'warning' : 'secondary') ?>">
                 <?= htmlspecialchars($trajet['statut']) ?>
@@ -238,12 +242,12 @@ $stats = [
               <input type="number" class="form-control" name="duree_minutes" id="duree_minutes" min="1" required>
             </div>
             <div class="col-md-4 mb-3">
-              <label class="form-label">Prix (TND) *</label>
-              <input type="number" step="0.01" class="form-control" name="prix" id="prix" min="0" required>
+              <label class="form-label">Budget (TND) *</label>
+              <input type="number" step="0.01" class="form-control" name="budget" id="budget" min="0" required>
             </div>
             <div class="col-md-4 mb-3">
-              <label class="form-label">Places Disponibles *</label>
-              <input type="number" class="form-control" name="places_disponibles" id="places_disponibles" min="1" required>
+              <label class="form-label">Places Demandées *</label>
+              <input type="number" class="form-control" name="places_demandees" id="places_demandees" min="1" required>
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label">Statut</label>
@@ -301,8 +305,8 @@ function editTrajet(trajet) {
   document.getElementById('lieu_arrivee').value = trajet.lieu_arrivee || '';
   document.getElementById('date_depart').value = trajet.date_depart ? trajet.date_depart.replace(' ', 'T').substring(0, 16) : '';
   document.getElementById('duree_minutes').value = trajet.duree_minutes || '';
-  document.getElementById('prix').value = trajet.prix || '';
-  document.getElementById('places_disponibles').value = trajet.places_disponibles || '';
+  document.getElementById('budget').value = trajet.budget || '';
+  document.getElementById('places_demandees').value = trajet.places_demandees || 1;
   document.getElementById('description').value = trajet.description || '';
   document.getElementById('statut').value = trajet.statut || 'disponible';
   

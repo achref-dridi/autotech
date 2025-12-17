@@ -600,11 +600,15 @@ $trajetsVedette = array_slice($trajets, 0, 6);
                                         <i class="fas fa-hourglass-end mr-2"></i><?= htmlspecialchars($t['duree_minutes']) ?> minutes
                                     </p>
                                     <p class="price" style="color: var(--primary-light); font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">
-                                        <?= number_format($t['prix'], 2) ?> DT
+                                        <?= number_format($t['budget'], 2) ?> DT (Budget)
                                     </p>
                                     <p class="d-flex mb-0 d-block">
                                         <?php if ($userController->estConnecte()): ?>
-                                            <a href="../user/prendre-trajet.php?id=<?= $t['id_trajet'] ?>" class="btn btn-secondary py-2 ml-0">Réserver</a>
+                                            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $t['id_utilisateur']): ?>
+                                                <a href="../user/voir-propositions.php?id=<?= $t['id_trajet'] ?>" class="btn btn-info py-2 ml-0">Voir les propositions</a>
+                                            <?php else: ?>
+                                                <a href="../user/faire-proposition.php?id=<?= $t['id_trajet'] ?>" class="btn btn-secondary py-2 ml-0">Faire une proposition</a>
+                                            <?php endif; ?>
                                         <?php else: ?>
                                             <a href="../auth/login.php" class="btn btn-secondary py-2 ml-0">Se connecter</a>
                                         <?php endif; ?>

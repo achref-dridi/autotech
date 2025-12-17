@@ -40,7 +40,9 @@ $stats['total_trips'] = $pdo->query("SELECT COUNT(*) FROM trajet")->fetchColumn(
 $stats['available_trips'] = $pdo->query("SELECT COUNT(*) FROM trajet WHERE statut = 'disponible'")->fetchColumn();
 
 // Trip reservations stats
-$stats['total_trip_reservations'] = $pdo->query("SELECT COUNT(*) FROM reservation_trajet")->fetchColumn();
+// Propositions stats
+$stats['total_propositions'] = $pdo->query("SELECT COUNT(*) FROM proposition")->fetchColumn();
+$stats['accepted_propositions'] = $pdo->query("SELECT COUNT(*) FROM proposition WHERE statut = 'acceptee'")->fetchColumn();
 
 // Get monthly trends for charts (last 6 months)
 $monthlyData = [];

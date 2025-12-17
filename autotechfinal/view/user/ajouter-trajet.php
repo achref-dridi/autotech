@@ -20,9 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_POST['lieu_arrivee'],
         $_POST['date_depart'],
         (int)$_POST['duree_minutes'],
-        (float)$_POST['prix'],
+        (float)$_POST['budget'],
         $_POST['description'] ?? '',
-        (int)$_POST['places_disponibles']
+        (int)$_POST['places_demandees']
     );
 
     $result = $trajetController->addTrajet($trajet);
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un Trajet - AutoTech</title>
+    <title>Demander un Trajet - AutoTech</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -288,7 +288,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <section class="hero-section">
         <div class="container">
-            <h1><i class="fas fa-plus-circle mr-2"></i> Ajouter un Trajet</h1>
+            <h1><i class="fas fa-plus-circle mr-2"></i> Demander un Trajet</h1>
         </div>
     </section>
 
@@ -351,19 +351,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="prix">
-                                <i class="fas fa-tag" style="color: var(--primary-light);"></i>
-                                Prix (DT)
+                            <label for="budget">
+                                <i class="fas fa-coins" style="color: var(--primary-light);"></i>
+                                Budget (DT)
                             </label>
-                            <input type="number" class="form-control" id="prix" name="prix" placeholder="Ex: 50" step="0.01" min="0" required>
+                            <input type="number" class="form-control" id="budget" name="budget" placeholder="Ex: 50" step="0.01" min="0" required>
                         </div>
 
                         <div class="form-group col-md-6">
-                            <label for="places_disponibles">
+                            <label for="places_demandees">
                                 <i class="fas fa-users" style="color: var(--primary-light);"></i>
-                                Places disponibles
+                                Places demandées
                             </label>
-                            <input type="number" class="form-control" id="places_disponibles" name="places_disponibles" value="1" min="1" required>
+                            <input type="number" class="form-control" id="places_demandees" name="places_demandees" value="1" min="1" required>
                         </div>
                     </div>
 

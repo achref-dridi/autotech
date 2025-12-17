@@ -170,9 +170,9 @@ CREATE TABLE IF NOT EXISTS trajet (
     lieu_arrivee VARCHAR(255) NOT NULL,
     date_depart DATETIME NOT NULL,
     duree_minutes INT UNSIGNED NOT NULL,
-    prix DECIMAL(10,2) NOT NULL,
+    budget DECIMAL(10,2) NOT NULL,
     description TEXT,
-    places_disponibles INT UNSIGNED DEFAULT 1,
+    places_demandees INT UNSIGNED DEFAULT 1,
     statut ENUM('disponible', 'complet', 'termine', 'annule') DEFAULT 'disponible',
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -188,27 +188,27 @@ CREATE TABLE IF NOT EXISTS trajet (
     INDEX idx_lieux (lieu_depart, lieu_arrivee)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS reservation_trajet (
-    id_reservation_trajet INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS proposition (
+    id_proposition INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_trajet INT UNSIGNED NOT NULL,
-    id_utilisateur INT UNSIGNED NOT NULL,
-    nombre_places INT UNSIGNED DEFAULT 1,
-    statut ENUM('en attente', 'confirmee', 'rejetee', 'annulee') DEFAULT 'en attente',
-    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    id_conducteur INT UNSIGNED NOT NULL,
+    prix DECIMAL(10,2) NOT NULL,
+    message TEXT,
+    date_proposition TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    statut ENUM('en_attente', 'acceptee', 'refusee') DEFAULT 'en_attente',
     
-    CONSTRAINT fk_res_trajet_trajet
+    CONSTRAINT fk_proposition_trajet
         FOREIGN KEY (id_trajet)
         REFERENCES trajet(id_trajet)
         ON DELETE CASCADE,
     
-    CONSTRAINT fk_res_trajet_utilisateur
-        FOREIGN KEY (id_utilisateur)
+    CONSTRAINT fk_proposition_conducteur
+        FOREIGN KEY (id_conducteur)
         REFERENCES utilisateur(id_utilisateur)
         ON DELETE CASCADE,
     
     INDEX idx_trajet (id_trajet),
-    INDEX idx_utilisateur (id_utilisateur),
+    INDEX idx_conducteur (id_conducteur),
     INDEX idx_statut (statut)
 ) ENGINE=InnoDB;
 
