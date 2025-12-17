@@ -386,7 +386,7 @@ if (isset($_GET['success'])) {
                     <div class="vehicule-card">
                         <div class="vehicule-image">
                             <?php if ($vehicule['image_principale']): ?>
-                                <img src="../../uploads/<?= htmlspecialchars($vehicule['image_principale']) ?>" alt="<?= htmlspecialchars($vehicule['marque']) ?>">
+                                <img src="../../uploads/vehicule/<?= htmlspecialchars($vehicule['image_principale']) ?>" alt="<?= htmlspecialchars($vehicule['marque']) ?>">
                             <?php else: ?>
                                 <i class="fas fa-car"></i>
                             <?php endif; ?>

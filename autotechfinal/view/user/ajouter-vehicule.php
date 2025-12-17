@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Upload image
     $imageName = null;
     if (isset($_FILES['image_principale']) && $_FILES['image_principale']['error'] === 0) {
-        $uploadDir = __DIR__ . '/../../uploads/';
+        $uploadDir = __DIR__ . '/../../uploads/vehicule/';
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
         
         $extension = pathinfo($_FILES['image_principale']['name'], PATHINFO_EXTENSION);

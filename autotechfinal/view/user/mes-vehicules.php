@@ -466,7 +466,7 @@ if (isset($_GET['success'])) {
                             <div class="vehicle-card">
                                 <img src="<?= 
                                     !empty($v['image_principale']) 
-                                        ? '../../uploads/' . htmlspecialchars($v['image_principale']) 
+                                        ? '../../uploads/vehicule/' . htmlspecialchars($v['image_principale']) 
                                         : '../../images/car-1.jpg' 
                                 ?>" alt="<?= htmlspecialchars($v['marque'] . ' ' . $v['modele']) ?>" class="vehicle-image">
                                 

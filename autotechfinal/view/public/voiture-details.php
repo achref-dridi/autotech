@@ -500,7 +500,7 @@ if ($id > 0) {
         <section class="py-5">
             <div class="container">
                 <div class="vehicle-image-card">
-                    <img src="<?= !empty($vehicule['image_principale']) ? "../../uploads/" . htmlspecialchars($vehicule['image_principale']) : "../../images/car-1.jpg"; ?>" 
+                    <img src="<?= !empty($vehicule['image_principale']) ? "../../uploads/vehicule/" . htmlspecialchars($vehicule['image_principale']) : "../../images/car-1.jpg"; ?>" 
                          alt="<?= htmlspecialchars($vehicule['marque'] . ' ' . $vehicule['modele']) ?>" 
                          class="vehicle-image">
                     <div class="vehicle-title-section">

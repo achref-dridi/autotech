@@ -399,7 +399,7 @@ $vehicules = $vehiculeController->getAllVehicules();
                             <div class="vehicle-card">
                                 <div class="vehicle-image-container" style="background-image: url('<?= 
                                     !empty($v['image_principale']) 
-                                        ? '../../uploads/' . htmlspecialchars($v['image_principale']) 
+                                        ? '../../uploads/vehicule/' . htmlspecialchars($v['image_principale']) 
                                         : '../../images/car-1.jpg' 
                                 ?>');">
                                 </div>

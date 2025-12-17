@@ -496,7 +496,7 @@ $trajetsVedette = array_slice($trajets, 0, 6);
                                     <div class="car-wrap rounded">
                                         <div class="img rounded d-flex align-items-end" style="background-image: url('<?= 
                                             !empty($v['image_principale']) 
-                                                ? '../../uploads/' . htmlspecialchars($v['image_principale']) 
+                                                ? '../../uploads/vehicule/' . htmlspecialchars($v['image_principale']) 
                                                 : '../../images/car-1.jpg' 
                                         ?>');"></div>
                                         <div class="text">

@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Upload image si nouvelle image
     $imageName = null;
     if (isset($_FILES['image_principale']) && $_FILES['image_principale']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = __DIR__ . '/../../uploads/';
+        $uploadDir = __DIR__ . '/../../uploads/vehicule/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -590,7 +590,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </label>
                                 <?php if (!empty($vehicule['image_principale'])): ?>
                                     <div class="current-image-container">
-                                        <img src="../../uploads/<?= htmlspecialchars($vehicule['image_principale']) ?>" 
+                                        <img src="../../uploads/vehicule/<?= htmlspecialchars($vehicule['image_principale']) ?>" 
                                              alt="Image actuelle">
                                         <p class="text-center"><i class="fas fa-check-circle mr-1"></i> Image actuelle</p>
                                     </div>
