@@ -197,7 +197,7 @@ if (isset($_GET['reject']) && is_numeric($_GET['reject'])) {
             <?php foreach ($propositions as $prop): ?>
                 <div class="prop-card">
                     <div class="driver-info">
-                        <img src="<?= !empty($prop['photo_profil']) ? '../../uploads/users/' . htmlspecialchars($prop['photo_profil']) : '../../images/default-avatar.png' ?>" alt="Driver" class="driver-img">
+                        <img src="<?= !empty($prop['photo_profil']) ? '../../uploads/profils/' . htmlspecialchars($prop['photo_profil']) : '../../images/default-avatar.png' ?>" alt="Driver" class="driver-img">
                         <div class="driver-details">
                             <h5><?= htmlspecialchars($prop['prenom'] . ' ' . $prop['nom']) ?></h5>
                             <p><i class="fas fa-star text-warning"></i> Conducteur</p>
